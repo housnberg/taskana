@@ -29,7 +29,7 @@ public class WorkbasketImpl implements Workbasket {
     private String orgLevel3;
     private String orgLevel4;
 
-    WorkbasketImpl() {
+    protected WorkbasketImpl() {
     }
 
     @Override

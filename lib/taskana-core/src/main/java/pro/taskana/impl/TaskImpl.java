@@ -63,7 +63,7 @@ public class TaskImpl implements Task {
     private String custom15;
     private String custom16;
 
-    TaskImpl() {
+    protected TaskImpl() {
     }
 
     @Override
