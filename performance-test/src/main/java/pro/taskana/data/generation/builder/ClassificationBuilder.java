@@ -1,0 +1,105 @@
+package pro.taskana.data.generation.builder;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import pro.taskana.data.generation.util.ClassificationWrapper;
+import pro.taskana.impl.ClassificationImpl;
+
+public class ClassificationBuilder {
+
+    private static final String CHILD_CATEGORY_PREFIX = "SC";
+    private static final String PREFIX_CATEGROY_SEPARATOR = "#";
+    
+    private Map<String, List<ClassificationImpl>> classificationsByType;
+    
+    private final String domain;
+    private String category;
+    private String type;
+    private int numberOfChildren;
+    
+    public ClassificationBuilder(String domain) {
+        this.domain = domain;
+        this.classificationsByType = new HashMap<>();
+    }
+    
+    private void init() {
+        category = null;
+        type = null;
+        numberOfChildren = 0;
+    }
+    
+    public ClassificationBuilder newClassificationCategory(String category) {
+        init();
+        this.category = category;
+        return this;
+    }
+    
+    public ClassificationBuilder withType(String type) {
+        this.type = type;
+        return this;
+    }
+    
+    public ClassificationBuilder withChildren(int numberOfChildren) {
+        this.numberOfChildren = numberOfChildren;
+        return this;
+    }
+    
+    public List<ClassificationImpl> build() {
+        List<ClassificationImpl> result = new ArrayList<>();
+        
+        ClassificationImpl classificationParent = generateClassification(category, type, null);
+        result.add(classificationParent);
+        
+        for (int i = 0; i < numberOfChildren; i++) {
+            String categoryOfChild = CHILD_CATEGORY_PREFIX + i + PREFIX_CATEGROY_SEPARATOR + category;
+            ClassificationImpl classificationChild = generateClassification(categoryOfChild, type, category);
+            result.add(classificationChild);
+        }
+        
+        return result;
+    }
+    
+    public List<ClassificationImpl> getAllGeneratedClassifications() {
+        return classificationsByType.values().stream().flatMap(List::stream).collect(Collectors.toList());
+    }
+    
+    public Map<String, List<ClassificationImpl>> getClassificationsByType() {
+        return classificationsByType;
+    }
+    
+    private ClassificationImpl generateClassification(String category, String type, String parentKey) {
+        ClassificationWrapper classification = new ClassificationWrapper();
+        classification.setCategory(category);
+        classification.setKey(category);
+        classification.setType(type);
+        if(parentKey == null) {
+            parentKey = type;
+        }
+        classification.setParentClassificationKey(parentKey);
+        classification.setDomain(domain);
+        classification.setIsValidInDomain(true);
+        
+        //TODO
+        classification.setCreated(Instant.now());
+        
+        initClassificationTypeIfNeccessary(type);
+        classificationsByType.get(type).add(classification);
+        return classification;
+    }
+    
+    private void initClassificationTypeIfNeccessary(String type) {
+        if(classificationsByType.containsKey(type)) {
+            if(classificationsByType.get(type) == null) {
+                classificationsByType.put(type, new ArrayList<>());
+            }
+        } else {
+            classificationsByType.put(type, new ArrayList<>());
+        }
+    }
+    
+}
