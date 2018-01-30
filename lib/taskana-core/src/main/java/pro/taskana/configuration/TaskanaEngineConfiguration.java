@@ -42,6 +42,7 @@ public class TaskanaEngineConfiguration {
     private static final String USER_PASSWORD = "sa";
     private static final String JDBC_H2_MEM_TASKANA = "jdbc:h2:mem:taskana;IGNORECASE=TRUE;LOCK_MODE=0;INIT=CREATE SCHEMA IF NOT EXISTS TASKANA";
     private static final String H2_DRIVER = "org.h2.Driver";
+
     private static final String TASKANA_PROPERTIES = "/taskana.properties";
     private static final String TASKANA_ROLES_SEPARATOR = "|";
     private static final String TASKANA_DOMAINS_PROPERTY = "taskana.domains";
@@ -51,7 +52,11 @@ public class TaskanaEngineConfiguration {
     // Taskana properties file
     protected String propertiesFileName = TASKANA_PROPERTIES;
 
-    // Taskana datasource configuration
+    private static final String DB2_USERNAME = "db2user";
+    private static final String DB2_PASSWORD = "DB2password";
+    private static final String DB2_URL = "jdbc:db2://localhost:50000/tskdb";
+    private static final String DB2_DRIVER = "com.ibm.db2.jcc.DB2Driver";
+
     protected DataSource dataSource;
     protected DbSchemaCreator dbScriptRunner;
 
@@ -229,6 +234,11 @@ public class TaskanaEngineConfiguration {
             + "'org.h2.Driver', 'jdbc:h2:mem:taskana;IGNORECASE=TRUE;LOCK_MODE=0;INIT=CREATE SCHEMA IF NOT EXISTS TASKANA', 'sa', 'sa'");
         return createDatasource(H2_DRIVER, JDBC_H2_MEM_TASKANA, USER_NAME, USER_PASSWORD);
     }
+
+    public static DataSource createDB2DataSource() {
+        return createDatasource(DB2_DRIVER, DB2_URL, DB2_USERNAME, DB2_PASSWORD);
+    }
+
 
     /**
      * This method creates the TaskanaEngine without an sqlSessionFactory.
