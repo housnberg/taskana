@@ -1,7 +1,8 @@
 package pro.taskana.data.generation.util;
 
 import pro.taskana.Workbasket;
-import pro.taskana.model.WorkbasketAccessItem;
+import pro.taskana.WorkbasketAccessItem;
+import pro.taskana.impl.WorkbasketAccessItemImpl;
 
 /**
  * Class wraps the {@link WorkbasketAccessItem}.
@@ -9,7 +10,7 @@ import pro.taskana.model.WorkbasketAccessItem;
  * @author fe
  *
  */
-public class WorkbasketAccessItemWrapper extends WorkbasketAccessItem {
+public class WorkbasketAccessItemWrapper extends WorkbasketAccessItemImpl {
 
 	private static int ACCESS_ITEM_ID = 0;
 
@@ -17,7 +18,7 @@ public class WorkbasketAccessItemWrapper extends WorkbasketAccessItem {
 	private UserWrapper proficientUser;
 	private WorkbasketWrapper wbWrapper;
 
-	public WorkbasketAccessItemWrapper() {
+    public WorkbasketAccessItemWrapper() {
 		this.uniqueNumber = ACCESS_ITEM_ID;
 		ACCESS_ITEM_ID++;
 	}
