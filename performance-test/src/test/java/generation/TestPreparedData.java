@@ -175,7 +175,7 @@ public class TestPreparedData {
 				currentTeamIndex = parent.getDirectChildren().indexOf(child);
 			}
 			String role = UserType.USER.getAsString();
-			if (child.getDistributionTargets().size() > 0) {
+			if (child.getDirectChildren().size() > 0) {
 				role = UserType.TEAMMANAGER.getAsString();
 			}
 			expectedOwner = DOMAIN + role + compoundOrgLvl + UserWrapper.ID_PART_LINKING_CHAR

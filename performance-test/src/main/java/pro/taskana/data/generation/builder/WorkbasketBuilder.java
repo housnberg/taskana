@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import pro.taskana.data.generation.util.DateHelper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.WorkbasketImpl;
-import pro.taskana.model.WorkbasketType;
+import pro.taskana.impl.WorkbasketType;
 
 /**
  * Class wraps the functionality for creating {@link Workbasket}.
