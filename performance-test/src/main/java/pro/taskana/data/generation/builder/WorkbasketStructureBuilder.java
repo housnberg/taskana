@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import pro.taskana.Workbasket;
+import pro.taskana.WorkbasketAccessItem;
 import pro.taskana.data.generation.util.AccessType;
 import pro.taskana.data.generation.util.ElementStack;
 import pro.taskana.data.generation.util.UserWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.WorkbasketImpl;
-import pro.taskana.model.WorkbasketAccessItem;
 
 /**
  * Class encapsulates all configuration options for creating a domain.

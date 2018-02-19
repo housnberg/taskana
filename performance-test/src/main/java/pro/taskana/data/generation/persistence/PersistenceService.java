@@ -9,9 +9,9 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pro.taskana.Workbasket;
-import pro.taskana.WorkbasketSummary;
+import pro.taskana.WorkbasketAccessItem;
+import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.WorkbasketImpl;
-import pro.taskana.model.WorkbasketAccessItem;
 
 /**
  * This class is used to persist the generated performance test data.
@@ -41,7 +41,7 @@ public class PersistenceService {
             DbInitializer dbInitializer = new DbInitializer(dataSource);
             dbInitializer.initDatabase();
         } catch (FileNotFoundException | NoSuchFieldException | SQLException ex) {
-            throw new IllegalStateException("Error durgin PersistenceService initialization: " + ex.getMessage());
+            throw new IllegalStateException("Error during PersistenceService initialization: " + ex.getMessage());
         }
         
     }
@@ -59,9 +59,10 @@ public class PersistenceService {
             for (Workbasket workbasket : generatedWorkbaskets) {
                 PersistenceServiceHelper.setWorkbasketParams(insertIntoWorkbasket, workbasket);
                 insertIntoWorkbasket.execute();
-
-                List<WorkbasketSummary> distributionTargets = workbasket.getDistributionTargets();
-                for (WorkbasketSummary distriutionTarget : distributionTargets) {
+                
+                WorkbasketWrapper wbw = (WorkbasketWrapper) workbasket;
+                List<WorkbasketWrapper> distributionTargets = wbw.getDirectChildren();
+                for (WorkbasketImpl distriutionTarget : distributionTargets) {
                     PersistenceServiceHelper.setDistributionTargetParams(insertIntoDistTarget, workbasket, distriutionTarget);
                     insertIntoDistTarget.execute();
                 }

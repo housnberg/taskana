@@ -21,7 +21,6 @@ import pro.taskana.exceptions.WorkbasketNotFoundException;
 import pro.taskana.impl.ClassificationImpl;
 import pro.taskana.impl.TaskImpl;
 import pro.taskana.impl.TaskanaEngineImpl;
-import pro.taskana.model.WorkbasketType;
 
 public class TaskanaAPI {
     
@@ -30,7 +29,6 @@ public class TaskanaAPI {
     private TaskanaEngine taskanaEngine;
     private TaskService taskService;
     private ClassificationService classificationService;
-    private WorkbasketService wbService;
     
     
     public TaskanaAPI() throws FileNotFoundException, NoSuchFieldException, SQLException {
@@ -39,7 +37,6 @@ public class TaskanaAPI {
         ((TaskanaEngineImpl) taskanaEngine).setConnectionManagementMode(TaskanaEngine.ConnectionManagementMode.AUTOCOMMIT);
         this.taskService = taskanaEngine.getTaskService();
         this.classificationService = taskanaEngine.getClassificationService();
-        this.wbService = taskanaEngine.getWorkbasketService();
     }
     
     public void createTasks(List<TaskImpl> tasks) {
@@ -61,30 +58,4 @@ public class TaskanaAPI {
             }
         }
     }
-       
-    public void createClassification() {
-        try {
-            classificationService.createClassification(classificationService.newClassification("a", "b", "c"));
-        } catch (ClassificationAlreadyExistException ex) {
-            java.util.logging.Logger.getLogger(TaskanaAPI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-      public void createWorkbasket() {
-        try {
-            Workbasket wb = wbService.newWorkbasket();
-            wb.setKey("AWB000000#00");
-            wb.setType(WorkbasketType.TOPIC);
-            wb.setDomain("A");
-            wb.setName("ASass");
-            wbService.createWorkbasket(wb);
-        } catch (InvalidWorkbasketException ex) {
-            java.util.logging.Logger.getLogger(TaskanaAPI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (WorkbasketNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TaskanaAPI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotAuthorizedException ex) {
-            java.util.logging.Logger.getLogger(TaskanaAPI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    } 
-
 }

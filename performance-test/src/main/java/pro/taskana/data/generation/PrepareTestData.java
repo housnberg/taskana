@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pro.taskana.WorkbasketAccessItem;
 
 import pro.taskana.data.generation.builder.ClassificationBuilder;
 import pro.taskana.data.generation.builder.WorkbasketStructureBuilder;
@@ -18,9 +19,8 @@ import pro.taskana.data.generation.util.ElementStack;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.ClassificationImpl;
 import pro.taskana.impl.TaskImpl;
+import pro.taskana.impl.TaskState;
 import pro.taskana.impl.WorkbasketImpl;
-import pro.taskana.model.TaskState;
-import pro.taskana.model.WorkbasketAccessItem;
 
 /**
  * Class for creating test data.
@@ -46,7 +46,6 @@ public class PrepareTestData {
 		persistenceService = new PersistenceService();
 		taskana = new TaskanaAPI();
 		
-                //taskana.createClassification();
                 //taskana.createWorkbasket();
 		buildDomainA();
 		//buildDomainB();
