@@ -9,11 +9,11 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import pro.taskana.Workbasket;
+import pro.taskana.WorkbasketAccessItem;
 import pro.taskana.data.generation.util.AccessType;
 import pro.taskana.data.generation.util.UserWrapper;
 import pro.taskana.data.generation.util.WorkbasketAccessItemWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
-import pro.taskana.model.WorkbasketAccessItem;
 
 /**
  * Class wraps the functionality for creating {@link WorkbasketAccessItem}.

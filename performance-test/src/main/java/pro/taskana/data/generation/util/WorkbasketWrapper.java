@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import pro.taskana.data.generation.builder.WorkbasketBuilder;
 import pro.taskana.impl.WorkbasketImpl;
-import pro.taskana.model.WorkbasketType;
+import pro.taskana.impl.WorkbasketType;
 
 /**
  * Class wraps the {@link WorkbasketImpl} to generate the id according to the
@@ -60,9 +60,8 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     public WorkbasketImpl getAsWorkbasket() {
         if (getId() == null || getId().isEmpty()) {
             calculateOrgLvl();
-            if (!directChildren.isEmpty()) {
-                setDistributionTargets(
-                        directChildren.stream().map(c -> c.getAsWorkbasket().asSummary()).collect(Collectors.toList()));
+            if (!directChildren.isEmpty()) {            
+                directChildren.stream().map(c -> c.getAsWorkbasket());
             }
             setOwner(userWrapper.getId());
             generateAndSetId();

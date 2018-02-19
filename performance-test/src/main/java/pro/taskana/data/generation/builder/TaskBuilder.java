@@ -8,10 +8,10 @@ import java.util.Random;
 
 import pro.taskana.data.generation.util.TaskWrapper;
 import pro.taskana.impl.ClassificationImpl;
+import pro.taskana.impl.ObjectReference;
 import pro.taskana.impl.TaskImpl;
+import pro.taskana.impl.TaskState;
 import pro.taskana.impl.WorkbasketImpl;
-import pro.taskana.model.ObjectReference;
-import pro.taskana.model.TaskState;
 
 public class TaskBuilder {
     

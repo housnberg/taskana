@@ -80,7 +80,7 @@ public class ClassificationBuilder {
         if(parentKey == null) {
             parentKey = type;
         }
-        classification.setParentClassificationKey(parentKey);
+        classification.setParentId(parentKey);
         classification.setDomain(domain);
         classification.setIsValidInDomain(true);
         

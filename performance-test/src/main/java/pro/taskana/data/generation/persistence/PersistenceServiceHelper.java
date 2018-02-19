@@ -4,9 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import pro.taskana.Workbasket;
+import pro.taskana.WorkbasketAccessItem;
 import pro.taskana.WorkbasketSummary;
 import pro.taskana.impl.WorkbasketImpl;
-import pro.taskana.model.WorkbasketAccessItem;
 
 /**
  * This class is used as a wrapper for all SQL Queries.
@@ -105,7 +105,7 @@ public final class PersistenceServiceHelper {
      * 
      * @throws SQLException If some errors occur during the setting of parameters.
      */
-    public static void setDistributionTargetParams(PreparedStatement ps, Workbasket source, WorkbasketSummary target) throws SQLException {
+    public static void setDistributionTargetParams(PreparedStatement ps, Workbasket source, WorkbasketImpl target) throws SQLException {
         ps.setString(DISTRIBUTION_TARGET_SOURCE_ID, source.getId());
         ps.setString(DISTRIBUTION_TARGET_TARGET_ID, target.getId());
     }

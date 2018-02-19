@@ -66,7 +66,7 @@ public class TaskanaEngineImpl implements TaskanaEngine {
         return new TaskanaEngineImpl(taskanaEngineConfiguration);
     }
 
-    protected TaskanaEngineImpl(TaskanaEngineConfiguration taskanaEngineConfiguration) {
+    public TaskanaEngineImpl(TaskanaEngineConfiguration taskanaEngineConfiguration) {
         this.taskanaEngineConfiguration = taskanaEngineConfiguration;
         createTransactionFactory(taskanaEngineConfiguration.getUseManagedTransactions());
         this.sessionManager = createSqlSessionManager();
