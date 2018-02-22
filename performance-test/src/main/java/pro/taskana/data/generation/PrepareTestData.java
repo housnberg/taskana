@@ -46,7 +46,7 @@ public class PrepareTestData {
 		persistenceService = new PersistenceService();
 		taskana = new TaskanaAPI();
 		
-                //taskana.createWorkbasket();
+        //taskana.createWorkbasket();
 		buildDomainA();
 		//buildDomainB();
 		//buildDomainC();
@@ -61,13 +61,13 @@ public class PrepareTestData {
 	private static void buildDomainA() {	 
 	    Map<String, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
 	    
+	   
 		WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("A");
 		ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(50);
 		List<WorkbasketWrapper> layer0 = structureBuilder.newLayer().withWb(5).withNumberOfDistTargets(10).selectFrom(personalWorkbaskets)
 				.build();
 		structureBuilder.newLayer().withWb(1).withDistTargets(layer0).build();	
 		persistDomain(structureBuilder);
-		DomainPrinter.printStructureOfDomain(structureBuilder);
 		
 		
 		//ADD TASKS
@@ -78,6 +78,7 @@ public class PrepareTestData {
 	            .addTasks(TaskState.CLAIMED, 15)
 	            .addTasks(TaskState.READY, 15).build();
 	    taskana.createTasks(tasks);
+	   
 	}
 
 	/**
@@ -137,12 +138,13 @@ public class PrepareTestData {
 		LOGGER.info("Persisting domain {}", domainBuilder.getDomainName());
 		List<WorkbasketImpl> wbs = domainBuilder.getGeneratedWorkbaskets();
 		List<WorkbasketAccessItem> wbAi = domainBuilder.getGeneratedAccessItems();
-
+		
 		persistenceService.persistWorkbaskets(wbs);
 		persistenceService.persistAccessItems(wbAi);
 
-		LOGGER.info("Domain {} with {} workbaskets, {} users and {} access items successfully persisted.",
+		LOGGER.info("Domain {} with {} workbaskets, {} users and {} builded.",
 				domainBuilder.getDomainName(), wbs.size(), domainBuilder.getGeneratedUsers().size(), wbAi.size());
+		DomainPrinter.printStructureOfDomain(domainBuilder);
 	}
 
 }
