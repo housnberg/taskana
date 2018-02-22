@@ -14,7 +14,6 @@ import pro.taskana.impl.WorkbasketImpl;
  * @author EL
  */
 public final class PersistenceServiceHelper {
-        
     public static final String SQL_CREATE_WORKBASKET = "INSERT INTO WORKBASKET"
             + " (ID, KEY, CREATED, MODIFIED, NAME, DOMAIN, TYPE, DESCRIPTION,"
             + " OWNER, CUSTOM_1, CUSTOM_2, CUSTOM_3, CUSTOM_4, ORG_LEVEL_1, ORG_LEVEL_2, ORG_LEVEL_3, ORG_LEVEL_4)"
@@ -24,8 +23,9 @@ public final class PersistenceServiceHelper {
             + " VALUES (?, ?)";
     public static final String SQL_CREATE_WORKBASKET_ACCESS_LIST = "INSERT INTO WORKBASKET_ACCESS_LIST"
             + " (ID, WORKBASKET_KEY, ACCESS_ID, PERM_READ, PERM_OPEN, PERM_APPEND, PERM_TRANSFER, PERM_DISTRIBUTE,"
-            + " PERM_CUSTOM_1, PERM_CUSTOM_2, PERM_CUSTOM_3, PERM_CUSTOM_4, PERM_CUSTOM_5, PERM_CUSTOM_6, PERM_CUSTOM_7, PERM_CUSTOM_8)"
-            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + " PERM_CUSTOM_1, PERM_CUSTOM_2, PERM_CUSTOM_3, PERM_CUSTOM_4, PERM_CUSTOM_5, PERM_CUSTOM_6, PERM_CUSTOM_7, PERM_CUSTOM_8, PERM_CUSTOM_9,"
+            + " PERM_CUSTOM_10, PERM_CUSTOM_11, PERM_CUSTOM_12)"
+            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     private static final int WORKBASKET_ID = 1;
     private static final int WORKBASKET_KEY = 2;
@@ -64,6 +64,10 @@ public final class PersistenceServiceHelper {
     private static final int WORKBASKET_ACCESS_LIST_PERM_CUSTOM_6 = 14;
     private static final int WORKBASKET_ACCESS_LIST_PERM_CUSTOM_7 = 15;
     private static final int WORKBASKET_ACCESS_LIST_PERM_CUSTOM_8 = 16;
+    private static final int WORKBASKET_ACCESS_LIST_PERM_CUSTOM_9 = 17;
+    private static final int WORKBASKET_ACCESS_LIST_PERM_CUSTOM_10 = 18;
+    private static final int WORKBASKET_ACCESS_LIST_PERM_CUSTOM_11 = 19;
+    private static final int WORKBASKET_ACCESS_LIST_PERM_CUSTOM_12 = 20;
     
     /**
      * Set all {@link Workbasket} parameters for a given {@link PreparedStatement}.
@@ -120,6 +124,7 @@ public final class PersistenceServiceHelper {
      * @throws SQLException If some errors occur during the setting of parameters.
      */
     public static void setWorkbasketAccessItemParams(PreparedStatement ps, WorkbasketAccessItem wbAccessItem) throws SQLException {
+        System.out.println(wbAccessItem);
         ps.setString(WORKBASKET_ACCESS_LIST_ID, wbAccessItem.getId());
         ps.setString(WORKBASKET_ACCESS_LIST_WORKBASKET_KEY, wbAccessItem.getWorkbasketKey());
         ps.setString(WORKBASKET_ACCESS_LIST_ACCESS_ID, wbAccessItem.getAccessId());
@@ -136,5 +141,9 @@ public final class PersistenceServiceHelper {
         ps.setBoolean(WORKBASKET_ACCESS_LIST_PERM_CUSTOM_6, wbAccessItem.isPermCustom6());
         ps.setBoolean(WORKBASKET_ACCESS_LIST_PERM_CUSTOM_7, wbAccessItem.isPermCustom7());
         ps.setBoolean(WORKBASKET_ACCESS_LIST_PERM_CUSTOM_8, wbAccessItem.isPermCustom8());
+        ps.setBoolean(WORKBASKET_ACCESS_LIST_PERM_CUSTOM_9, wbAccessItem.isPermCustom9());
+        ps.setBoolean(WORKBASKET_ACCESS_LIST_PERM_CUSTOM_10, wbAccessItem.isPermCustom10());
+        ps.setBoolean(WORKBASKET_ACCESS_LIST_PERM_CUSTOM_11, wbAccessItem.isPermCustom11());
+        ps.setBoolean(WORKBASKET_ACCESS_LIST_PERM_CUSTOM_12, wbAccessItem.isPermCustom12());
     }
 }

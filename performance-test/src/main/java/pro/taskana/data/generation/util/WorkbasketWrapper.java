@@ -221,6 +221,54 @@ public class WorkbasketWrapper extends WorkbasketImpl {
             setId(sb.toString());
         }
     }
+    
+    
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((directChildren == null) ? 0 : directChildren.hashCode());
+        result = prime * result + ((directOrIndirectChildren == null) ? 0 : directOrIndirectChildren.hashCode());
+        result = prime * result + ((formattedOrgLevel == null) ? 0 : formattedOrgLevel.hashCode());
+        result = prime * result + layer;
+        result = prime * result + ((memberId == null) ? 0 : memberId.hashCode());
+        result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+        result = prime * result + ((userWrapper == null) ? 0 : userWrapper.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (getClass() != obj.getClass())
+            return false;
+        WorkbasketWrapper other = (WorkbasketWrapper) obj;
+        if (formattedOrgLevel == null) {
+            if (other.formattedOrgLevel != null)
+                return false;
+        } else if (!formattedOrgLevel.equals(other.formattedOrgLevel))
+            return false;
+        if (layer != other.layer)
+            return false;
+        if (memberId == null) {
+            if (other.memberId != null)
+                return false;
+        } else if (!memberId.equals(other.memberId))
+            return false;
+        if (parent == null) {
+            if (other.parent != null)
+                return false;
+        } else if (!parent.equals(other.parent))
+            return false;
+        if (userWrapper == null) {
+            if (other.userWrapper != null)
+                return false;
+        } else if (!userWrapper.equals(other.userWrapper))
+            return false;
+        return true;
+    }
 
     @Override
     public String toString() {
