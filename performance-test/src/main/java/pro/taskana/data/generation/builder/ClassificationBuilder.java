@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import pro.taskana.data.generation.util.ClassificationType;
 import pro.taskana.data.generation.util.ClassificationWrapper;
 import pro.taskana.impl.ClassificationImpl;
 
@@ -15,11 +16,11 @@ public class ClassificationBuilder {
     private static final String CHILD_CATEGORY_PREFIX = "SC";
     private static final String PREFIX_CATEGROY_SEPARATOR = "#";
     
-    private Map<String, List<ClassificationImpl>> classificationsByType;
+    private Map<ClassificationType, List<ClassificationImpl>> classificationsByType;
     
     private final String domain;
     private String category;
-    private String type;
+    private ClassificationType type;
     private int numberOfChildren;
     
     public ClassificationBuilder(String domain) {
@@ -39,7 +40,7 @@ public class ClassificationBuilder {
         return this;
     }
     
-    public ClassificationBuilder withType(String type) {
+    public ClassificationBuilder withType(ClassificationType type) {
         this.type = type;
         return this;
     }
@@ -68,17 +69,17 @@ public class ClassificationBuilder {
         return classificationsByType.values().stream().flatMap(List::stream).collect(Collectors.toList());
     }
     
-    public Map<String, List<ClassificationImpl>> getClassificationsByType() {
+    public Map<ClassificationType, List<ClassificationImpl>> getClassificationsByType() {
         return classificationsByType;
     }
     
-    private ClassificationImpl generateClassification(String category, String type, String parentKey) {
+    private ClassificationImpl generateClassification(String category, ClassificationType type, String parentKey) {
         ClassificationWrapper classification = new ClassificationWrapper();
         classification.setCategory(category);
         classification.setKey(category);
-        classification.setType(type);
+        classification.setType(type.toString());
         if(parentKey == null) {
-            parentKey = type;
+            parentKey = type.toString();
         }
         classification.setParentId(parentKey);
         classification.setDomain(domain);
@@ -92,7 +93,7 @@ public class ClassificationBuilder {
         return classification;
     }
     
-    private void initClassificationTypeIfNeccessary(String type) {
+    private void initClassificationTypeIfNeccessary(ClassificationType type) {
         if(classificationsByType.containsKey(type)) {
             if(classificationsByType.get(type) == null) {
                 classificationsByType.put(type, new ArrayList<>());
