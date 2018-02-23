@@ -14,6 +14,7 @@ import pro.taskana.data.generation.builder.WorkbasketStructureBuilder;
 import pro.taskana.data.generation.builder.TaskBuilder;
 import pro.taskana.data.generation.persistence.PersistenceService;
 import pro.taskana.data.generation.persistence.TaskanaAPI;
+import pro.taskana.data.generation.util.ClassificationType;
 import pro.taskana.data.generation.util.DomainPrinter;
 import pro.taskana.data.generation.util.ElementStack;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
@@ -58,27 +59,30 @@ public class PrepareTestData {
 	 * @throws NoSuchFieldException 
 	 * @throws FileNotFoundException 
 	 */
-	private static void buildDomainA() {	 
-	    Map<String, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
-	    
-	   
-		WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("A");
+	private static void buildDomainA() {	  
+		//Build workbaskets
+	    WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("A");
 		ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(50);
-		List<WorkbasketWrapper> layer0 = structureBuilder.newLayer().withWb(5).withNumberOfDistTargets(10).selectFrom(personalWorkbaskets)
-				.build();
-		structureBuilder.newLayer().withWb(1).withDistTargets(layer0).build();	
+		List<WorkbasketWrapper> layer0 = structureBuilder.newLayer().withWb(5)
+		        .withNumberOfDistTargets(10)
+		        .selectFrom(personalWorkbaskets).build();
+		structureBuilder.newLayer().withWb(1)
+		        .withDistTargets(layer0).build();	
 		persistDomain(structureBuilder);
 		
-		
-		//ADD TASKS
-	    TaskBuilder taskBuilder = new TaskBuilder(classificationsByType.get("Aufgabentyp"));
+		//Build classifications
+	    Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
+	      
+		//Build tasks
+	    TaskBuilder taskBuilder = new TaskBuilder(classificationsByType);
 	    List<WorkbasketImpl> wbsInDomain = structureBuilder.getGeneratedWorkbaskets();
 	    List<TaskImpl> tasks = taskBuilder.affect(wbsInDomain)
 	            .addTasks(TaskState.COMPLETED, 30)
 	            .addTasks(TaskState.CLAIMED, 15)
-	            .addTasks(TaskState.READY, 15).build();
+	            .addTasks(TaskState.READY, 15)
+	            .withObjectReferences(2, 3)
+	            .withAttachments(1).build();
 	    taskana.createTasks(tasks);
-	   
 	}
 
 	/**
@@ -123,12 +127,12 @@ public class PrepareTestData {
 		DomainPrinter.printStructureOfDomain(structureBuilder);
 	}
 
-    private static Map<String, List<ClassificationImpl>> createClassificationsForDomain(String domain) {
+    private static Map<ClassificationType, List<ClassificationImpl>> createClassificationsForDomain(String domain) {
         ClassificationBuilder classificationBuilder = new ClassificationBuilder(domain);
-        classificationBuilder.newClassificationCategory("Maschinell").withType("Aufgabentyp").withChildren(100).build();
-        classificationBuilder.newClassificationCategory("Manuell").withType("Aufgabentyp").withChildren(100).build();
-        classificationBuilder.newClassificationCategory("Extern").withType("Aufgabentyp").withChildren(100).build();
-        classificationBuilder.newClassificationCategory("Doktyp_Extern").withType("Dokumenttyp").withChildren(100)
+        classificationBuilder.newClassificationCategory("Maschinell").withType(ClassificationType.AUFGABENTYP).withChildren(100).build();
+        classificationBuilder.newClassificationCategory("Manuell").withType(ClassificationType.AUFGABENTYP).withChildren(100).build();
+        classificationBuilder.newClassificationCategory("Extern").withType(ClassificationType.AUFGABENTYP).withChildren(100).build();
+        classificationBuilder.newClassificationCategory("Doktyp_Extern").withType(ClassificationType.DOKUMENTTYP).withChildren(100)
                 .build();
         taskana.createClassification(classificationBuilder.getAllGeneratedClassifications());
         return classificationBuilder.getClassificationsByType();
@@ -142,9 +146,9 @@ public class PrepareTestData {
 		persistenceService.persistWorkbaskets(wbs);
 		persistenceService.persistAccessItems(wbAi);
 
+		DomainPrinter.printStructureOfDomain(domainBuilder);  
 		LOGGER.info("Domain {} with {} workbaskets, {} users and {} builded.",
 				domainBuilder.getDomainName(), wbs.size(), domainBuilder.getGeneratedUsers().size(), wbAi.size());
-		DomainPrinter.printStructureOfDomain(domainBuilder);
 	}
 
 }
