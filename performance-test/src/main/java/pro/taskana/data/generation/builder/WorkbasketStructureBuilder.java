@@ -252,5 +252,21 @@ public class WorkbasketStructureBuilder {
 		distributionTargets = new ArrayList<>();
 		poolOfGeneratedWorkbaskets = new ElementStack<>();
 	}
+        
+        /**
+         * Returns all {@link Workbasket} for a given Layer.
+         * 
+         * @param layer The layer with all {@link Workbasket}
+         * @return all {@link Workbasket} for the layer.
+         */
+        public static List<WorkbasketWrapper> getWorkbasketsForLayer(List<WorkbasketWrapper> layer) {
+            List<WorkbasketWrapper> workasketsInLayer = new ArrayList<>();
+            
+            layer.stream().forEach((wb) -> {
+                workasketsInLayer.addAll(wb.getDirectOrIndirectChildren());
+            });
+            
+            return workasketsInLayer;
+        }
 
 }
