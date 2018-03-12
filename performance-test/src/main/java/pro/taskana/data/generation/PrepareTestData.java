@@ -25,107 +25,201 @@ import pro.taskana.impl.WorkbasketImpl;
 
 /**
  * Class for creating test data.
- * 
+ *
  * @author fe
  *
  */
 public class PrepareTestData {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(PrepareTestData.class);
-	private static PersistenceService persistenceService;
-	private static TaskanaAPI taskana;
+    private static final Logger LOGGER = LoggerFactory.getLogger(PrepareTestData.class);
+    private static PersistenceService persistenceService;
+    private static TaskanaAPI taskana;
 
-	/**
-	 * Build test data
-	 * 
-	 * @param args
-	 * @throws SQLException 
-	 * @throws NoSuchFieldException 
-	 * @throws FileNotFoundException 
-	 */
-	public static void main(String[] args) throws FileNotFoundException, NoSuchFieldException, SQLException {
-		persistenceService = new PersistenceService();
-		taskana = new TaskanaAPI();
-		
-        //taskana.createWorkbasket();
-		buildDomainA();
-		//buildDomainB();
-		//buildDomainC();
-	}
+    /**
+     * Build test data
+     *
+     * @param args
+     * @throws SQLException
+     * @throws NoSuchFieldException
+     * @throws FileNotFoundException
+     */
+    public static void main(String[] args) throws FileNotFoundException, NoSuchFieldException, SQLException {
+        persistenceService = new PersistenceService();
+        taskana = new TaskanaAPI();
 
-	/**
-	 * Creates domain A. 
-	 * @throws SQLException 
-	 * @throws NoSuchFieldException 
-	 * @throws FileNotFoundException 
-	 */
-	private static void buildDomainA() {	  
-		//Build workbaskets
-	    WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("A");
-		ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(50);
-		List<WorkbasketWrapper> layer0 = structureBuilder.newLayer().withWb(5)
-		        .withNumberOfDistTargets(10)
-		        .selectFrom(personalWorkbaskets).build();
-		structureBuilder.newLayer().withWb(1)
-		        .withDistTargets(layer0).build();	
-		persistDomain(structureBuilder);
-		
-		//Build classifications
-	    Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
-	      
-		//Build tasks
-	    TaskBuilder taskBuilder = new TaskBuilder(classificationsByType);
-	    List<WorkbasketImpl> wbsInDomain = structureBuilder.getGeneratedWorkbaskets();
-	    List<TaskImpl> tasks = taskBuilder.affect(wbsInDomain)
-	            .addTasks(TaskState.COMPLETED, 30)
-	            .addTasks(TaskState.CLAIMED, 15)
-	            .addTasks(TaskState.READY, 15)
-	            .withObjectReferences(2, 3)
-	            .withAttachments(1).build();
-	    taskana.createTasks(tasks);
-	}
+        //buildDomainA();
+        buildDomainB();
+        //buildDomainC();
+    }
 
-	/**
-	 * Creates domain B.
-	 */
-	private static void buildDomainB() {
-		WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("B");
+    /**
+     * Creates domain A.
+     *
+     * @throws SQLException
+     * @throws NoSuchFieldException
+     * @throws FileNotFoundException
+     */
+    private static void buildDomainA() {
+        //Build workbaskets
+        WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("A");
+        ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(50);
+        List<WorkbasketWrapper> layer0 = structureBuilder
+                .newLayer()
+                .withWb(5)
+                .withNumberOfDistTargets(10)
+                .selectFrom(personalWorkbaskets)
+                .build();
+        structureBuilder
+                .newLayer()
+                .withWb(1)
+                .withDistTargets(layer0)
+                .build();
+        persistDomain(structureBuilder);
 
-		ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(100);
+        //Build classifications
+        Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
 
-		List<WorkbasketWrapper> layer0 = structureBuilder.newLayer().withWb(20).withNumberOfDistTargets(5)
-				.selectFrom(personalWorkbaskets).build();
-		ElementStack<WorkbasketWrapper> layer0Wbs = new ElementStack<>(layer0);
+        //Build tasks
+        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType);
+        
+        List<WorkbasketWrapper> wbsWithTasks = WorkbasketStructureBuilder.getWorkbasketsForLayer(layer0);
+        
+        List<TaskImpl> tasks = taskBuilder
+                .affect(halveList(wbsWithTasks))
+                .addTasks(TaskState.COMPLETED, 30000)
+                .addTasks(TaskState.CLAIMED, 15000)
+                .addTasks(TaskState.READY, 15000)
+                .withObjectReferences(2, 3)
+                .build();
+        taskana.createTasks(tasks);
+    }
 
-		List<WorkbasketWrapper> layer1 = structureBuilder.newLayer().withWb(4).withNewOwner().withNumberOfDistTargets(5).selectFrom(layer0Wbs).build();
+    /**
+     * Creates domain B.
+     */
+    private static void buildDomainB() {
+        WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("B");
 
-		structureBuilder.newLayer().withWb(1).withDistTargets(layer1).build();
+        ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(100);
 
-		persistDomain(structureBuilder);
-		DomainPrinter.printStructureOfDomain(structureBuilder);
-	}
+        List<WorkbasketWrapper> layer0 = structureBuilder
+                .newLayer()
+                .withWb(20)
+                .withNumberOfDistTargets(5)
+                .selectFrom(personalWorkbaskets).build();
+        ElementStack<WorkbasketWrapper> layer0Wbs = new ElementStack<>(layer0);
 
-	/**
-	 * Creates domain C.
-	 */
-	private static void buildDomainC() {
-		WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("C");
+        List<WorkbasketWrapper> layer1 = structureBuilder
+                .newLayer()
+                .withWb(4)
+                .withNewOwner()
+                .withNumberOfDistTargets(5)
+                .selectFrom(layer0Wbs)
+                .build();
 
-		ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(27000);
+        structureBuilder
+                .newLayer()
+                .withWb(1)
+                .withDistTargets(layer1)
+                .build();
 
-		List<WorkbasketWrapper> layer0FwdTo10 = structureBuilder.newLayer().withWb(1875).withNumberOfDistTargets(15)
-				.selectFrom(personalWorkbaskets).build();
-		ElementStack<WorkbasketWrapper> layer1Wb = new ElementStack<>(layer0FwdTo10);
+        persistDomain(structureBuilder);
 
-		List<WorkbasketWrapper> layer2FwdTo10 = structureBuilder.newLayer().withWb(75).withNewOwner().withNumberOfDistTargets(25)
-				.selectFrom(layer1Wb).build();
-		ElementStack<WorkbasketWrapper> layer2Wb = new ElementStack<>(layer2FwdTo10);
+        //Build classifications
+        Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
 
-		structureBuilder.newLayer().withWb(3).withNewOwner().withNumberOfDistTargets(25).selectFrom(layer2Wb).build();
-		
-		persistDomain(structureBuilder);
-		DomainPrinter.printStructureOfDomain(structureBuilder);
-	}
+        List<WorkbasketWrapper> wbsWithTasks = WorkbasketStructureBuilder.getWorkbasketsForLayer(layer0);
+        
+        //Build tasks
+        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType);
+        List<TaskImpl> tasks = taskBuilder
+                .affect(halveList(wbsWithTasks))
+                //.addTasks(TaskState.COMPLETED, 5000)
+                //.addTasks(TaskState.CLAIMED, 2500)
+                //.addTasks(TaskState.READY, 2500)
+                .addTasks(TaskState.COMPLETED, 2)
+                .addTasks(TaskState.CLAIMED, 1)
+                .addTasks(TaskState.READY, 1)
+                //.withAttachments(1)
+                .withObjectReferences(2, 3)
+                .build();
+        taskana.createTasks(tasks);
+    }
+
+    /**
+     * Creates domain C.
+     */
+    private static void buildDomainC() {
+        WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("C");
+
+        ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(27000);
+
+        List<WorkbasketWrapper> layer0FwdTo10 = structureBuilder
+                .newLayer()
+                .withWb(1875)
+                .withNumberOfDistTargets(15)
+                .selectFrom(personalWorkbaskets)
+                .build();
+        ElementStack<WorkbasketWrapper> layer1Wb = new ElementStack<>(layer0FwdTo10);
+
+        List<WorkbasketWrapper> layer2FwdTo10 = structureBuilder
+                .newLayer()
+                .withWb(75)
+                .withNewOwner()
+                .withNumberOfDistTargets(25)
+                .selectFrom(layer1Wb)
+                .build();
+        ElementStack<WorkbasketWrapper> layer2Wb = new ElementStack<>(layer2FwdTo10);
+
+        List<WorkbasketWrapper> uppermostLayer = structureBuilder
+                .newLayer()
+                .withWb(3)
+                .withNewOwner()
+                .withNumberOfDistTargets(25)
+                .selectFrom(layer2Wb)
+                .build();
+
+        persistDomain(structureBuilder);
+        
+        //Build classifications
+        Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
+        
+        List<WorkbasketWrapper> wbsWith0Attachments = WorkbasketStructureBuilder.getWorkbasketsForLayer(uppermostLayer.get(0).getDirectChildren());
+        List<WorkbasketWrapper> wbsWith1Attachment = WorkbasketStructureBuilder.getWorkbasketsForLayer(uppermostLayer.get(1).getDirectChildren());
+        List<WorkbasketWrapper> wbsWith2Attachments = WorkbasketStructureBuilder.getWorkbasketsForLayer(uppermostLayer.get(2).getDirectChildren());
+        
+        //Build tasks
+        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType);
+        
+        List<TaskImpl> tasks = taskBuilder
+                .affect(halveList(wbsWith0Attachments))
+                .addTasks(TaskState.COMPLETED, 100)
+                .addTasks(TaskState.CLAIMED, 50)
+                .addTasks(TaskState.READY, 50)
+                .withObjectReferences(2, 3)
+                .build();
+        taskana.createTasks(tasks);
+        
+        tasks = taskBuilder
+                .affect(halveList(wbsWith1Attachment))
+                .addTasks(TaskState.COMPLETED, 100)
+                .addTasks(TaskState.CLAIMED, 50)
+                .addTasks(TaskState.READY, 50)
+                .withObjectReferences(2, 3)
+                .withAttachments(1)
+                .build();
+        taskana.createTasks(tasks);
+        
+        tasks = taskBuilder
+                .affect(halveList(wbsWith2Attachments))
+                .addTasks(TaskState.COMPLETED, 100)
+                .addTasks(TaskState.CLAIMED, 50)
+                .addTasks(TaskState.READY, 50)
+                .withObjectReferences(2, 3)
+                .withAttachments(2)
+                .build();
+        taskana.createTasks(tasks);
+    }
 
     private static Map<ClassificationType, List<ClassificationImpl>> createClassificationsForDomain(String domain) {
         ClassificationBuilder classificationBuilder = new ClassificationBuilder(domain);
@@ -138,17 +232,20 @@ public class PrepareTestData {
         return classificationBuilder.getClassificationsByType();
     }
 
-	private static void persistDomain(WorkbasketStructureBuilder domainBuilder) {
-		LOGGER.info("Persisting domain {}", domainBuilder.getDomainName());
-		List<WorkbasketImpl> wbs = domainBuilder.getGeneratedWorkbaskets();
-		List<WorkbasketAccessItem> wbAi = domainBuilder.getGeneratedAccessItems();
-		
-		persistenceService.persistWorkbaskets(wbs);
-		persistenceService.persistAccessItems(wbAi);
+    private static void persistDomain(WorkbasketStructureBuilder domainBuilder) {
+        LOGGER.info("Persisting domain {}", domainBuilder.getDomainName());
+        List<WorkbasketImpl> wbs = domainBuilder.getGeneratedWorkbaskets();
+        List<WorkbasketAccessItem> wbAi = domainBuilder.getGeneratedAccessItems();
 
-		DomainPrinter.printStructureOfDomain(domainBuilder);  
-		LOGGER.info("Domain {} with {} workbaskets, {} users and {} builded.",
-				domainBuilder.getDomainName(), wbs.size(), domainBuilder.getGeneratedUsers().size(), wbAi.size());
-	}
+        persistenceService.persistWorkbaskets(wbs);
+        persistenceService.persistAccessItems(wbAi);
 
+        DomainPrinter.printStructureOfDomain(domainBuilder);
+        LOGGER.info("Domain {} with {} workbaskets, {} users and {} builded.",
+                domainBuilder.getDomainName(), wbs.size(), domainBuilder.getGeneratedUsers().size(), wbAi.size());
+    }
+
+    private static List<WorkbasketWrapper> halveList(List<WorkbasketWrapper> listToHalve) {
+        return listToHalve.subList(0, listToHalve.size() / 2);
+    }
 }
