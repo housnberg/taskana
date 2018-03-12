@@ -107,6 +107,8 @@ public class RestApplication {
         return new SpringHandlerInstantiator(context.getAutowireCapableBeanFactory());
     }
 
+    //Dont create sample data if you are generating the Test data!
+    /*
     @PostConstruct
     public void createSampleData() {
         try {
@@ -115,5 +117,6 @@ public class RestApplication {
             logger.error("Could not create sample data.", e);
         }
     }
+    */
 
 }

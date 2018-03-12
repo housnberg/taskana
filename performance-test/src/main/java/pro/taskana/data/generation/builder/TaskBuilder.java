@@ -8,6 +8,7 @@ import java.util.Random;
 
 import pro.taskana.data.generation.util.ClassificationType;
 import pro.taskana.data.generation.util.TaskWrapper;
+import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.ClassificationImpl;
 import pro.taskana.impl.TaskImpl;
 import pro.taskana.impl.TaskState;
@@ -17,7 +18,7 @@ public class TaskBuilder {
     
     private List<ClassificationImpl> taskClassifications;
     private Random rnd;
-    private List<WorkbasketImpl> affectedWorkbaskets;
+    private List<WorkbasketWrapper> affectedWorkbaskets;
     private Map<TaskState, Integer> taskDistribution;
     
     private AttachmentBuilder attachmentBuilder;
@@ -28,17 +29,21 @@ public class TaskBuilder {
     private int maxNumOfObjectReferences;
     private int numberOfAttachments;
     
-    public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications) {
+    public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications, int maxAttachments) {
         this.taskDistribution = new HashMap<>();
         this.affectedWorkbaskets = new ArrayList<>();
         this.taskClassifications = classifications.get(ClassificationType.AUFGABENTYP);
         this.rnd = new Random();
-        attachmentBuilder = new AttachmentBuilder(classifications);
+        attachmentBuilder = new AttachmentBuilder(classifications, maxAttachments);
         objectReferenceBuilder = new ObjectReferenceBuilder(200);
     }
     
+    public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications) {
+        this(classifications, 0);
+    }
     
-    public TaskBuilder affect(List<WorkbasketImpl> workbaskets) {
+    
+    public TaskBuilder affect(List<WorkbasketWrapper> workbaskets) {
         this.affectedWorkbaskets = workbaskets;
         this.taskDistribution = new HashMap<>();
         this.maxNumOfObjectReferences = 1;
@@ -57,8 +62,7 @@ public class TaskBuilder {
     }
     
     public TaskBuilder withObjectReferences(int exactNumberOfObjectReferences) {
-        minNumOfObjectReferences = exactNumberOfObjectReferences;
-        maxNumOfObjectReferences = exactNumberOfObjectReferences;
+        withObjectReferences(exactNumberOfObjectReferences, exactNumberOfObjectReferences);
         return this;
     }
     
@@ -75,13 +79,14 @@ public class TaskBuilder {
     
     public List<TaskImpl> build() {
         List<TaskImpl> generatedTaks = new ArrayList<>();
-        for (WorkbasketImpl wb : affectedWorkbaskets) {
-            generatedTaks.addAll(generateTasksForWorkbasket(wb));
+        for (WorkbasketWrapper wb : affectedWorkbaskets) {
+           generatedTaks.addAll(generateTasksForWorkbasket(wb));
+           TaskWrapper.resetTaskCountInWorkbasket();
         }
         return generatedTaks;
     }
     
-    private List<TaskImpl> generateTasksForWorkbasket(WorkbasketImpl workbasket) {
+    private List<TaskImpl> generateTasksForWorkbasket(WorkbasketWrapper workbasket) {
         List<TaskImpl> tasksInWb = new ArrayList<>();
         for (TaskState state : taskDistribution.keySet()) {
             List<TaskImpl> tasksInState = generateTasks(workbasket, state, taskDistribution.get(state));
@@ -90,11 +95,10 @@ public class TaskBuilder {
         return tasksInWb;
     }
     
-    private List<TaskImpl> generateTasks(WorkbasketImpl workbasket, TaskState state, int quantity) {
+    private List<TaskImpl> generateTasks(WorkbasketWrapper workbasket, TaskState state, int quantity) {
         List<TaskImpl> tasks = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
-            TaskImpl task = new TaskWrapper();
-            task.setState(state);
+            TaskImpl task = new TaskWrapper(workbasket.getId(), state);
             task.setOwner(workbasket.getOwner());
             task.setWorkbasketKey(workbasket.getKey());
             

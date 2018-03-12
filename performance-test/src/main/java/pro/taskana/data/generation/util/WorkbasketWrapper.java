@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import pro.taskana.data.generation.builder.WorkbasketBuilder;
+import pro.taskana.impl.TaskImpl;
 import pro.taskana.impl.WorkbasketImpl;
 import pro.taskana.impl.WorkbasketType;
 
@@ -31,6 +32,8 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     private List<WorkbasketWrapper> directOrIndirectChildren;
     private List<WorkbasketWrapper> directChildren;
     private UserWrapper userWrapper;
+    
+    private List<TaskImpl> tasks;
 
     public WorkbasketWrapper(WorkbasketType type, String domain) {
         this.setType(type);
@@ -102,7 +105,7 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     public List<WorkbasketWrapper> getDirectOrIndirectChildren() {
         return directOrIndirectChildren;
     }
-
+    
     /**
      * Sets the parent of this {@link Workbasket}.
      *
@@ -221,8 +224,6 @@ public class WorkbasketWrapper extends WorkbasketImpl {
             setId(sb.toString());
         }
     }
-    
-    
 
     @Override
     public int hashCode() {
