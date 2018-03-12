@@ -58,7 +58,6 @@ public class TaskServiceImpl implements TaskService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskServiceImpl.class);
     private static final String ID_PREFIX_ATTACHMENT = "TAI";
-    private static final String ID_PREFIX_TASK = "TKI";
     private static final String ID_PREFIX_BUSINESS_PROCESS = "BPI";
     private static final String MUST_NOT_BE_EMPTY = " must not be empty";
     private static final Duration MAX_DURATION = Duration.ofSeconds(Long.MAX_VALUE, 999_999_999);
@@ -330,6 +329,18 @@ public class TaskServiceImpl implements TaskService {
                 this.taskMapper.insert(task);
                 LOGGER.debug("Method createTask() created Task '{}'.", task.getId());
             }
+            Classification classification = this.classificationService.getClassification(classificationKey,
+                workbasket.getDomain());
+            task.setClassificationKey(classificationKey);
+            task.setClassificationCategory(classification.getCategory());
+            task.setClassificationSummary(classification.asSummary());
+            task.setWorkbasketSummary(workbasket.asSummary());
+            validateObjectReference(task.getPrimaryObjRef(), "primary ObjectReference", "Task");
+            validateAttachments(task);
+            task.setDomain(workbasket.getDomain());
+            standardSettings(task, classification);
+            this.taskMapper.insert(task);
+            LOGGER.debug("Method createTask() created Task '{}'.", task.getId());
             return task;
         } finally {
             taskanaEngine.returnConnection();
@@ -643,8 +654,6 @@ public class TaskServiceImpl implements TaskService {
     private void standardSettings(TaskImpl task, Classification classification,
         PrioDurationHolder prioDurationFromAttachments) {
         Instant now = Instant.now();
-        task.setId(IdGenerator.generateWithPrefix(ID_PREFIX_TASK));
-        task.setState(TaskState.READY);
         task.setCreated(now);
         task.setModified(now);
         task.setRead(false);

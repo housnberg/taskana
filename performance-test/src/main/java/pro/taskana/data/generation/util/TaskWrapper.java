@@ -1,10 +1,19 @@
 package pro.taskana.data.generation.util;
 
 import pro.taskana.impl.TaskImpl;
+import pro.taskana.impl.TaskState;
 
 public class TaskWrapper extends TaskImpl{
 
-    public TaskWrapper() {
-
+    private static int taskCountInWb = 0;
+    
+    public TaskWrapper(String workbasketId, TaskState state) {
+        String formattedCount = String.format("%05d", taskCountInWb++);
+        setId(state.toString().substring(0, 2) + formattedCount + workbasketId);
+        setState(state);
+    }
+    
+    public static void resetTaskCountInWorkbasket() {
+        taskCountInWb = 0;
     }
 }
