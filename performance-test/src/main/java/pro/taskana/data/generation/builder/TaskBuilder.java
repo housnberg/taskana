@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import pro.taskana.TaskState;
 import pro.taskana.data.generation.util.ClassificationType;
 import pro.taskana.data.generation.util.TaskWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.ClassificationImpl;
 import pro.taskana.impl.TaskImpl;
-import pro.taskana.impl.TaskState;
 import pro.taskana.impl.WorkbasketImpl;
 
 public class TaskBuilder {
@@ -101,11 +101,19 @@ public class TaskBuilder {
             TaskImpl task = new TaskWrapper(workbasket.getId(), state);
             task.setOwner(workbasket.getOwner());
             task.setWorkbasketKey(workbasket.getKey());
+            task.setWorkbasketSummary(workbasket.asSummary());
+            
+            if(workbasket.asSummary().getDomain().isEmpty()) {
+                System.out.println("!!!");
+            }
             
             int rndIndex = rnd.nextInt(taskClassifications.size());
             ClassificationImpl taskClassification = taskClassifications.get(rndIndex);
             String classificationKey = taskClassification.getKey();
             task.setClassificationKey(classificationKey);
+            
+            //TODO mehrere POR
+            
             task.setPrimaryObjRef(objectReferenceBuilder.getObjectReference());
             task.setAttachments(attachmentBuilder.getAttachments(numberOfAttachments));
             tasks.add(task);

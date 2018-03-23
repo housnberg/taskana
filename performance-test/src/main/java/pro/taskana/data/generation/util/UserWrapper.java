@@ -1,7 +1,6 @@
 package pro.taskana.data.generation.util;
 
-import pro.taskana.impl.WorkbasketType;
-
+import pro.taskana.WorkbasketType;
 
 /**
  * Class wraps the informations to generate a user-id with the pattern:

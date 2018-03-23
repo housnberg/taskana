@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import pro.taskana.TaskState;
 import pro.taskana.WorkbasketAccessItem;
 
 import pro.taskana.data.generation.builder.ClassificationBuilder;
@@ -20,7 +22,6 @@ import pro.taskana.data.generation.util.ElementStack;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.ClassificationImpl;
 import pro.taskana.impl.TaskImpl;
-import pro.taskana.impl.TaskState;
 import pro.taskana.impl.WorkbasketImpl;
 
 /**
@@ -134,9 +135,9 @@ public class PrepareTestData {
         TaskBuilder taskBuilder = new TaskBuilder(classificationsByType);
         List<TaskImpl> tasks = taskBuilder
                 .affect(halveList(wbsWithTasks))
-                .addTasks(TaskState.COMPLETED, 5000)
-                .addTasks(TaskState.CLAIMED, 2500)
-                .addTasks(TaskState.READY, 2500)
+                .addTasks(TaskState.COMPLETED, 50)//5000
+                .addTasks(TaskState.CLAIMED, 25)//2500
+                .addTasks(TaskState.READY, 25)//2500
                 .withAttachments(1)
                 .withObjectReferences(2, 3)
                 .build();

@@ -1,7 +1,7 @@
 package pro.taskana.data.generation.util;
 
+import pro.taskana.TaskState;
 import pro.taskana.impl.TaskImpl;
-import pro.taskana.impl.TaskState;
 
 public class TaskWrapper extends TaskImpl{
 
