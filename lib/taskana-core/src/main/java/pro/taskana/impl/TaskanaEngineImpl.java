@@ -1,7 +1,5 @@
 package pro.taskana.impl;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
@@ -31,8 +29,6 @@ import pro.taskana.configuration.TaskanaEngineConfiguration;
 import pro.taskana.exceptions.AutocommitFailedException;
 import pro.taskana.exceptions.ConnectionNotSetException;
 import pro.taskana.exceptions.NotAuthorizedException;
-import pro.taskana.exceptions.SystemException;
-import pro.taskana.exceptions.UnsupportedDatabaseException;
 import pro.taskana.impl.persistence.MapTypeHandler;
 import pro.taskana.impl.util.LoggerUtils;
 import pro.taskana.mappings.AttachmentMapper;
@@ -321,6 +317,7 @@ public class TaskanaEngineImpl implements TaskanaEngine {
             taskanaEngineConfiguration.getDatasource());
         Configuration configuration = new Configuration(environment);
 
+        /**
         // set databaseId
         String databaseProductName;
         try (Connection con = taskanaEngineConfiguration.getDatasource().getConnection()) {
@@ -345,7 +342,7 @@ public class TaskanaEngineImpl implements TaskanaEngine {
             throw new SystemException(
                 "Method createSqlSessionManager() could not open a connection to the database. No databaseId has been set.");
         }
-
+**/
         // add mappers
         configuration.addMapper(TaskMapper.class);
         configuration.addMapper(TaskMonitorMapper.class);
