@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import pro.taskana.data.generation.util.ClassificationType;
@@ -14,7 +15,7 @@ import pro.taskana.impl.ClassificationImpl;
 public class ClassificationBuilder {
 
     private static final String CHILD_CATEGORY_PREFIX = "SC";
-    private static final String PREFIX_CATEGROY_SEPARATOR = "#";
+    private static final String PREFIX_CATEGROY_SEPARATOR = "_";
     
     private Map<ClassificationType, List<ClassificationImpl>> classificationsByType;
     
@@ -58,7 +59,7 @@ public class ClassificationBuilder {
         
         for (int i = 0; i < numberOfChildren; i++) {
             String categoryOfChild = CHILD_CATEGORY_PREFIX + i + PREFIX_CATEGROY_SEPARATOR + category;
-            ClassificationImpl classificationChild = generateClassification(categoryOfChild, type, category);
+            ClassificationImpl classificationChild = generateClassification(categoryOfChild, type, classificationParent.getId());
             result.add(classificationChild);
         }
         
@@ -73,18 +74,20 @@ public class ClassificationBuilder {
         return classificationsByType;
     }
     
-    private ClassificationImpl generateClassification(String category, ClassificationType type, String parentKey) {
+    private ClassificationImpl generateClassification(String category, ClassificationType type, String parentId) {
         ClassificationWrapper classification = new ClassificationWrapper();
         classification.setCategory(category);
         classification.setKey(category);
         classification.setType(type.toString());
-        if(parentKey == null) {
-            parentKey = type.toString();
+        if(parentId == null) {
+            classification.setId(type.toString());
+        } else {
+            classification.setParentId(parentId);
+            classification.setId(UUID.randomUUID().toString());
         }
-        classification.setParentId(parentKey);
         classification.setDomain(domain);
         classification.setIsValidInDomain(true);
-        
+
         //TODO
         classification.setCreated(Instant.now());
         

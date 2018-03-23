@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import pro.taskana.WorkbasketType;
 import pro.taskana.data.generation.util.DateHelper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.WorkbasketImpl;
-import pro.taskana.impl.WorkbasketType;
 
 /**
  * Class wraps the functionality for creating {@link Workbasket}.
