@@ -29,17 +29,17 @@ public class TaskBuilder {
     private int maxNumOfObjectReferences;
     private int numberOfAttachments;
     
-    public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications, int maxAttachments) {
+    public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications, int numberOfPOR, int maxAttachments) {
         this.taskDistribution = new HashMap<>();
         this.affectedWorkbaskets = new ArrayList<>();
         this.taskClassifications = classifications.get(ClassificationType.AUFGABENTYP);
         this.rnd = new Random();
         attachmentBuilder = new AttachmentBuilder(classifications, maxAttachments);
-        objectReferenceBuilder = new ObjectReferenceBuilder(200);
+        objectReferenceBuilder = new ObjectReferenceBuilder(numberOfPOR);
     }
     
-    public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications) {
-        this(classifications, 0);
+    public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications, int numberOfPOR) {
+        this(classifications, numberOfPOR, 0);
     }
     
     
