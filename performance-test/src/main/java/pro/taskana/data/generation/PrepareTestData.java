@@ -81,7 +81,7 @@ public class PrepareTestData {
         Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
 
         //Build tasks
-        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType);
+        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 150000);
         
         List<WorkbasketWrapper> wbsWithTasks = WorkbasketStructureBuilder.getWorkbasketsForLayer(layer0);
         
@@ -132,7 +132,7 @@ public class PrepareTestData {
         List<WorkbasketWrapper> wbsWithTasks = WorkbasketStructureBuilder.getWorkbasketsForLayer(layer0);
         
         //Build tasks
-        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType);
+        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 50000);
         List<TaskImpl> tasks = taskBuilder
                 .affect(halveList(wbsWithTasks))
                 .addTasks(TaskState.COMPLETED, 50)//5000
@@ -187,7 +187,7 @@ public class PrepareTestData {
         List<WorkbasketWrapper> wbsWith2Attachments = WorkbasketStructureBuilder.getWorkbasketsForLayer(uppermostLayer.get(2).getDirectChildren());
         
         //Build tasks
-        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType);
+        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 300000);
         
         List<TaskImpl> tasks = taskBuilder
                 .affect(halveList(wbsWith0Attachments))
