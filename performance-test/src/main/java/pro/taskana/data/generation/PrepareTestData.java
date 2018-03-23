@@ -126,7 +126,7 @@ public class PrepareTestData {
         persistDomain(structureBuilder);
 
         //Build classifications
-        Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
+        Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("B");
 
         List<WorkbasketWrapper> wbsWithTasks = WorkbasketStructureBuilder.getWorkbasketsForLayer(layer0);
         
@@ -134,13 +134,10 @@ public class PrepareTestData {
         TaskBuilder taskBuilder = new TaskBuilder(classificationsByType);
         List<TaskImpl> tasks = taskBuilder
                 .affect(halveList(wbsWithTasks))
-                //.addTasks(TaskState.COMPLETED, 5000)
-                //.addTasks(TaskState.CLAIMED, 2500)
-                //.addTasks(TaskState.READY, 2500)
-                .addTasks(TaskState.COMPLETED, 2)
-                .addTasks(TaskState.CLAIMED, 1)
-                .addTasks(TaskState.READY, 1)
-                //.withAttachments(1)
+                .addTasks(TaskState.COMPLETED, 5000)
+                .addTasks(TaskState.CLAIMED, 2500)
+                .addTasks(TaskState.READY, 2500)
+                .withAttachments(1)
                 .withObjectReferences(2, 3)
                 .build();
         taskana.createTasks(tasks);
@@ -182,7 +179,7 @@ public class PrepareTestData {
         persistDomain(structureBuilder);
         
         //Build classifications
-        Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
+        Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("C");
         
         List<WorkbasketWrapper> wbsWith0Attachments = WorkbasketStructureBuilder.getWorkbasketsForLayer(uppermostLayer.get(0).getDirectChildren());
         List<WorkbasketWrapper> wbsWith1Attachment = WorkbasketStructureBuilder.getWorkbasketsForLayer(uppermostLayer.get(1).getDirectChildren());
