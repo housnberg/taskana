@@ -59,7 +59,7 @@ public class TaskanaEngineImpl implements TaskanaEngine {
     protected TransactionFactory transactionFactory;
     protected SqlSessionManager sessionManager;
     protected SqlSessionFactory sessionFactory;
-    protected ConnectionManagementMode mode = ConnectionManagementMode.PARTICIPATE;
+    protected ConnectionManagementMode mode = ConnectionManagementMode.AUTOCOMMIT;
     protected java.sql.Connection connection = null;
 
     protected TaskanaEngineImpl(TaskanaEngineConfiguration taskanaEngineConfiguration) {
@@ -326,7 +326,7 @@ public class TaskanaEngineImpl implements TaskanaEngine {
         try (Connection con = taskanaEngineConfiguration.getDatasource().getConnection()) {
             databaseProductName = con.getMetaData().getDatabaseProductName();
             if (databaseProductName.contains("DB2")) {
-                configuration.setDatabaseId("db2");
+               configuration.setDatabaseId("db2");
             } else if (databaseProductName.contains("H2")) {
                 configuration.setDatabaseId("h2");
             } else if (databaseProductName.equals("PostgreSQL")) {
