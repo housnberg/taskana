@@ -52,7 +52,7 @@ public class WorkbasketAccessItemWrapper extends WorkbasketAccessItemImpl {
 	 */
 	public WorkbasketAccessItem getAsWorkbasketAccessItem() {
 		setAccessId(proficientUser.getId());
-		setWorkbasketKey(wbWrapper.getKey());
+		setWorkbasketId(wbWrapper.getId());
 		buildAndSetId();
 		return this;
 	}

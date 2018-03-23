@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import pro.taskana.Workbasket;
 import pro.taskana.WorkbasketAccessItem;
-import pro.taskana.WorkbasketSummary;
 import pro.taskana.impl.WorkbasketImpl;
 
 /**
@@ -22,7 +21,7 @@ public final class PersistenceServiceHelper {
             + " (SOURCE_ID, TARGET_ID)"
             + " VALUES (?, ?)";
     public static final String SQL_CREATE_WORKBASKET_ACCESS_LIST = "INSERT INTO WORKBASKET_ACCESS_LIST"
-            + " (ID, WORKBASKET_KEY, ACCESS_ID, PERM_READ, PERM_OPEN, PERM_APPEND, PERM_TRANSFER, PERM_DISTRIBUTE,"
+            + " (ID, WORKBASKET_ID, ACCESS_ID, PERM_READ, PERM_OPEN, PERM_APPEND, PERM_TRANSFER, PERM_DISTRIBUTE,"
             + " PERM_CUSTOM_1, PERM_CUSTOM_2, PERM_CUSTOM_3, PERM_CUSTOM_4, PERM_CUSTOM_5, PERM_CUSTOM_6, PERM_CUSTOM_7, PERM_CUSTOM_8, PERM_CUSTOM_9,"
             + " PERM_CUSTOM_10, PERM_CUSTOM_11, PERM_CUSTOM_12)"
             + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -49,7 +48,7 @@ public final class PersistenceServiceHelper {
     private static final int DISTRIBUTION_TARGET_TARGET_ID = 2;
     
     private static final int WORKBASKET_ACCESS_LIST_ID = 1;
-    private static final int WORKBASKET_ACCESS_LIST_WORKBASKET_KEY = 2;
+    private static final int WORKBASKET_ACCESS_LIST_WORKBASKET_ID = 2;
     private static final int WORKBASKET_ACCESS_LIST_ACCESS_ID = 3;
     private static final int WORKBASKET_ACCESS_LIST_PERM_READ = 4;
     private static final int WORKBASKET_ACCESS_LIST_PERM_OPEN = 5;
@@ -126,7 +125,7 @@ public final class PersistenceServiceHelper {
     public static void setWorkbasketAccessItemParams(PreparedStatement ps, WorkbasketAccessItem wbAccessItem) throws SQLException {
         System.out.println(wbAccessItem);
         ps.setString(WORKBASKET_ACCESS_LIST_ID, wbAccessItem.getId());
-        ps.setString(WORKBASKET_ACCESS_LIST_WORKBASKET_KEY, wbAccessItem.getWorkbasketKey());
+        ps.setString(WORKBASKET_ACCESS_LIST_WORKBASKET_ID, wbAccessItem.getWorkbasketId());
         ps.setString(WORKBASKET_ACCESS_LIST_ACCESS_ID, wbAccessItem.getAccessId());
         ps.setBoolean(WORKBASKET_ACCESS_LIST_PERM_READ, wbAccessItem.isPermRead());
         ps.setBoolean(WORKBASKET_ACCESS_LIST_PERM_OPEN, wbAccessItem.isPermOpen());

@@ -297,9 +297,9 @@ public class TaskServiceImpl implements TaskService {
         TaskImpl task = (TaskImpl) taskToCreate;
         try {
             taskanaEngine.openConnection();
-            if (task.getId() != "" && task.getId() != null) {
-                throw new TaskAlreadyExistException(task.getId());
-            } else {
+           // if (task.getId() != "" && task.getId() != null) {
+           //   throw new TaskAlreadyExistException(task.getId());
+           //} else {
                 LOGGER.debug("Task {} cannot be be found, so it can be created.", task.getId());
                 Workbasket workbasket;
 
@@ -332,7 +332,7 @@ public class TaskServiceImpl implements TaskService {
                 standardSettings(task, classification, prioDurationFromAttachments);
                 this.taskMapper.insert(task);
                 LOGGER.debug("Method createTask() created Task '{}'.", task.getId());
-            }
+            //   }
             return task;
         } finally {
             taskanaEngine.returnConnection();
