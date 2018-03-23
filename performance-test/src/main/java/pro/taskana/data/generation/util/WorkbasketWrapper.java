@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import pro.taskana.WorkbasketType;
 import pro.taskana.data.generation.builder.WorkbasketBuilder;
 import pro.taskana.impl.TaskImpl;
 import pro.taskana.impl.WorkbasketImpl;
-import pro.taskana.impl.WorkbasketType;
 
 /**
  * Class wraps the {@link WorkbasketImpl} to generate the id according to the
@@ -21,7 +21,7 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     public static final int NUMBER_LENGTH_IN_ID = 2;
     
     private static final String WORKBASKET_ID_PREFIX = "WB";
-    private static final String ID_PART_LINKING_CHAR = "#";
+    private static final String ID_PART_LINKING_CHAR = "_";
     private static final int INITIAL_MEMBER_ID = 0;
 
     private Integer memberId;
