@@ -90,7 +90,7 @@ public class PrepareTestData {
                 .addTasks(TaskState.COMPLETED, 30000)
                 .addTasks(TaskState.CLAIMED, 15000)
                 .addTasks(TaskState.READY, 15000)
-                .withObjectReferences(2, 3)
+                .withObjectReferences(2)
                 .build();
         taskana.createTasks(tasks);
     }
@@ -139,7 +139,7 @@ public class PrepareTestData {
                 .addTasks(TaskState.CLAIMED, 25)//2500
                 .addTasks(TaskState.READY, 25)//2500
                 .withAttachments(1)
-                .withObjectReferences(2, 3)
+                .withObjectReferences(2)
                 .build();
         taskana.createTasks(tasks);
     }
@@ -194,7 +194,7 @@ public class PrepareTestData {
                 .addTasks(TaskState.COMPLETED, 100)
                 .addTasks(TaskState.CLAIMED, 50)
                 .addTasks(TaskState.READY, 50)
-                .withObjectReferences(2, 3)
+                .withObjectReferences(2)
                 .build();
         taskana.createTasks(tasks);
         
@@ -203,7 +203,7 @@ public class PrepareTestData {
                 .addTasks(TaskState.COMPLETED, 100)
                 .addTasks(TaskState.CLAIMED, 50)
                 .addTasks(TaskState.READY, 50)
-                .withObjectReferences(2, 3)
+                .withObjectReferences(2)
                 .withAttachments(1)
                 .build();
         taskana.createTasks(tasks);
@@ -213,7 +213,7 @@ public class PrepareTestData {
                 .addTasks(TaskState.COMPLETED, 100)
                 .addTasks(TaskState.CLAIMED, 50)
                 .addTasks(TaskState.READY, 50)
-                .withObjectReferences(2, 3)
+                .withObjectReferences(2)
                 .withAttachments(2)
                 .build();
         taskana.createTasks(tasks);
