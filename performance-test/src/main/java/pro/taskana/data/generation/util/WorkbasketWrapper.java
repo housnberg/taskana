@@ -2,7 +2,6 @@ package pro.taskana.data.generation.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import pro.taskana.WorkbasketType;
 import pro.taskana.data.generation.builder.WorkbasketBuilder;
@@ -20,8 +19,9 @@ public class WorkbasketWrapper extends WorkbasketImpl {
 
     public static final int NUMBER_LENGTH_IN_ID = 2;
     
+    private static final int ID_LENGTH = 40;
     private static final String WORKBASKET_ID_PREFIX = "WB";
-    private static final String ID_PART_LINKING_CHAR = "_";
+    private static final char SEPERATOR = '_';
     private static final int INITIAL_MEMBER_ID = 0;
 
     private Integer memberId;
@@ -218,10 +218,11 @@ public class WorkbasketWrapper extends WorkbasketImpl {
             StringBuilder sb = new StringBuilder(getDomain());
             sb.append(WORKBASKET_ID_PREFIX);
             sb.append(formattedOrgLevel);
-            sb.append(ID_PART_LINKING_CHAR);
+            sb.append(SEPERATOR);
             sb.append(Formatter.format(getMemberId(), NUMBER_LENGTH_IN_ID));
-            setKey(sb.toString());
-            setId(sb.toString());
+            String id = sb.toString();
+            setKey(id);
+            setId(Formatter.fitToExpectedLength(id, ID_LENGTH));
         }
     }
 

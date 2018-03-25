@@ -12,7 +12,6 @@ import pro.taskana.data.generation.util.TaskWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.ClassificationImpl;
 import pro.taskana.impl.TaskImpl;
-import pro.taskana.impl.WorkbasketImpl;
 
 public class TaskBuilder {
     
@@ -24,18 +23,17 @@ public class TaskBuilder {
     private AttachmentBuilder attachmentBuilder;
     private ObjectReferenceBuilder objectReferenceBuilder;
     
-    //currently unused because there is no possiblity to map object references to task yet.
-    private int minNumOfObjectReferences;
-    private int maxNumOfObjectReferences;
     private int numberOfAttachments;
+    private int numberOfPORForTask;
     
-    public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications, int numberOfPOR, int maxAttachments) {
+    public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications, int numberOfDifferentPOR, int maxAttachments) {
         this.taskDistribution = new HashMap<>();
         this.affectedWorkbaskets = new ArrayList<>();
         this.taskClassifications = classifications.get(ClassificationType.AUFGABENTYP);
         this.rnd = new Random();
         attachmentBuilder = new AttachmentBuilder(classifications, maxAttachments);
-        objectReferenceBuilder = new ObjectReferenceBuilder(numberOfPOR);
+        this.numberOfPORForTask = 1;
+        objectReferenceBuilder = new ObjectReferenceBuilder(numberOfDifferentPOR);
     }
     
     public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications, int numberOfPOR) {
@@ -46,8 +44,6 @@ public class TaskBuilder {
     public TaskBuilder affect(List<WorkbasketWrapper> workbaskets) {
         this.affectedWorkbaskets = workbaskets;
         this.taskDistribution = new HashMap<>();
-        this.maxNumOfObjectReferences = 1;
-        this.minNumOfObjectReferences = 1;
         this.numberOfAttachments = 0;
         return this;
     }
@@ -62,13 +58,7 @@ public class TaskBuilder {
     }
     
     public TaskBuilder withObjectReferences(int exactNumberOfObjectReferences) {
-        withObjectReferences(exactNumberOfObjectReferences, exactNumberOfObjectReferences);
-        return this;
-    }
-    
-    public TaskBuilder withObjectReferences(int minNumberOfObjectReferences, int maxNumberOfObjectReferences) {
-        this.minNumOfObjectReferences = minNumberOfObjectReferences;
-        this.maxNumOfObjectReferences = maxNumberOfObjectReferences;
+        this.numberOfPORForTask = exactNumberOfObjectReferences;
         return this;
     }
     
@@ -103,25 +93,18 @@ public class TaskBuilder {
             task.setWorkbasketKey(workbasket.getKey());
             task.setWorkbasketSummary(workbasket.asSummary());
             
-            if(workbasket.asSummary().getDomain().isEmpty()) {
-                System.out.println("!!!");
-            }
-            
             int rndIndex = rnd.nextInt(taskClassifications.size());
             ClassificationImpl taskClassification = taskClassifications.get(rndIndex);
             String classificationKey = taskClassification.getKey();
             task.setClassificationKey(classificationKey);
             
-            //TODO mehrere POR
-            
             task.setPrimaryObjRef(objectReferenceBuilder.getObjectReference());
+            for (int j = 0; j < numberOfPORForTask-1; j++) {
+                   //TODO: Add additional object references
+            }
             task.setAttachments(attachmentBuilder.getAttachments(numberOfAttachments));
             tasks.add(task);
         }
         return tasks;
     }
-    
-
-    
-
 }
