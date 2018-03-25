@@ -80,15 +80,13 @@ public class ClassificationBuilder {
         classification.setKey(category);
         classification.setType(type.toString());
         if(parentId == null) {
-            classification.setId(type.toString());
+            classification.setId(type.toString() + PREFIX_CATEGROY_SEPARATOR + category);
         } else {
             classification.setParentId(parentId);
             classification.setId(UUID.randomUUID().toString());
         }
         classification.setDomain(domain);
         classification.setIsValidInDomain(true);
-
-        //TODO
         classification.setCreated(Instant.now());
         
         initClassificationTypeIfNeccessary(type);
