@@ -655,8 +655,12 @@ public class TaskServiceImpl implements TaskService {
     private void standardSettings(TaskImpl task, Classification classification,
         PrioDurationHolder prioDurationFromAttachments) {
         Instant now = Instant.now();
-        task.setId(IdGenerator.generateWithPrefix(ID_PREFIX_TASK));
-        task.setState(TaskState.READY);
+        if (task.getId() == null || task.getId().trim().isEmpty()) {
+            task.setId(IdGenerator.generateWithPrefix(ID_PREFIX_TASK));
+        }
+        if (task.getState() == null) {
+            task.setState(TaskState.READY);
+        }
         task.setCreated(now);
         task.setModified(now);
         task.setRead(false);
