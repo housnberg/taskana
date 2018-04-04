@@ -25,11 +25,4 @@ public class ExampleRestApplication {
         SpringApplication.run(ExampleRestApplication.class, args);
     }
 
-    @Bean
-    @DependsOn("taskanaEngineConfiguration") // generate sample data after schema was inserted
-    public SampleDataGenerator generateSampleData(DataSource dataSource) throws SQLException {
-        SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(dataSource);
-        sampleDataGenerator.generateSampleData();
-        return sampleDataGenerator;
-    }
 }
