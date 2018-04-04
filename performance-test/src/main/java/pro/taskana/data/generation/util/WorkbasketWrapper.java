@@ -5,7 +5,6 @@ import java.util.List;
 
 import pro.taskana.WorkbasketType;
 import pro.taskana.data.generation.builder.WorkbasketBuilder;
-import pro.taskana.impl.TaskImpl;
 import pro.taskana.impl.WorkbasketImpl;
 
 /**
@@ -32,8 +31,6 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     private List<WorkbasketWrapper> directOrIndirectChildren;
     private List<WorkbasketWrapper> directChildren;
     private UserWrapper userWrapper;
-    
-    private List<TaskImpl> tasks;
 
     public WorkbasketWrapper(WorkbasketType type, String domain) {
         this.setType(type);

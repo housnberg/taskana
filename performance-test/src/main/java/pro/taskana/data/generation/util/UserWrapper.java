@@ -12,7 +12,7 @@ import pro.taskana.WorkbasketType;
  */
 public class UserWrapper {
 
-    public static final String ID_PART_LINKING_CHAR = "#";
+    public static final String ID_PART_LINKING_CHAR = "_";
     public static final int NUMBER_LENGTH_IN_ID = 2;
     
     private String orglvl;

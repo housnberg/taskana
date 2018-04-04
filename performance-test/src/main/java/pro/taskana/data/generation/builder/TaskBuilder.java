@@ -33,6 +33,7 @@ public class TaskBuilder {
         this.rnd = new Random();
         attachmentBuilder = new AttachmentBuilder(classifications, maxAttachments);
         this.numberOfPORForTask = 1;
+        this.numberOfAttachments = 0;
         objectReferenceBuilder = new ObjectReferenceBuilder(numberOfDifferentPOR);
     }
     
@@ -88,8 +89,9 @@ public class TaskBuilder {
     private List<TaskImpl> generateTasks(WorkbasketWrapper workbasket, TaskState state, int quantity) {
         List<TaskImpl> tasks = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
-            TaskImpl task = new TaskWrapper(workbasket.getId(), state);
+            TaskImpl task = new TaskWrapper(workbasket.getKey(), state);
             task.setOwner(workbasket.getOwner());
+            task.setNote(workbasket.getOwner());
             task.setWorkbasketKey(workbasket.getKey());
             task.setWorkbasketSummary(workbasket.asSummary());
             

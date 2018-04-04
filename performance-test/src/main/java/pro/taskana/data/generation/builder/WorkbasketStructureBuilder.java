@@ -239,10 +239,10 @@ public class WorkbasketStructureBuilder {
 			parent.setUserAsOwner(children.get(0).getOwnerAsUser());
 		}
 		parent.addDistributionTargets(children);
-		accesItemBuilder.forUser(parent.getOwnerAsUser()).hasAccess(AccessType.APPEND, AccessType.READ, AccessType.OPEN)
+		accesItemBuilder.forUser(parent.getOwnerAsUser()).hasAccess(AccessType.APPEND, AccessType.READ, AccessType.OPEN, AccessType.TRANSFER)
 				.transitiveTo(children).build();
 		List<UserWrapper> member = children.stream().map(wb -> wb.getOwnerAsUser()).collect(Collectors.toList());
-		accesItemBuilder.forUsers(member).hasAccess(AccessType.READ, AccessType.APPEND, AccessType.OPEN).to(parent).build();
+		accesItemBuilder.forUsers(member).hasAccess(AccessType.READ, AccessType.APPEND, AccessType.OPEN, AccessType.TRANSFER).to(parent).build();
 	}
 
 	private void init() {
