@@ -48,9 +48,9 @@ public class PrepareTestData {
         persistenceService = new PersistenceService();
         taskana = new TaskanaAPI();
 
-        //buildDomainA();
+        buildDomainA();
         buildDomainB();
-        //buildDomainC();
+        buildDomainC();
     }
 
     /**
@@ -135,9 +135,9 @@ public class PrepareTestData {
         TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 50000);
         List<TaskImpl> tasks = taskBuilder
                 .affect(halveList(wbsWithTasks))
-                .addTasks(TaskState.COMPLETED, 50) //5000
-                .addTasks(TaskState.CLAIMED, 25) //2500
-                .addTasks(TaskState.READY, 25)
+                .addTasks(TaskState.COMPLETED, 5000) 
+                .addTasks(TaskState.CLAIMED, 2500) 
+                .addTasks(TaskState.READY, 2500)
                 .withAttachments(1)
                 .withObjectReferences(2)
                 .build();
