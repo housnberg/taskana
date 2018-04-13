@@ -10,10 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import pro.taskana.TaskState;
 import pro.taskana.WorkbasketAccessItem;
-
 import pro.taskana.data.generation.builder.ClassificationBuilder;
-import pro.taskana.data.generation.builder.WorkbasketStructureBuilder;
 import pro.taskana.data.generation.builder.TaskBuilder;
+import pro.taskana.data.generation.builder.WorkbasketStructureBuilder;
 import pro.taskana.data.generation.persistence.PersistenceService;
 import pro.taskana.data.generation.persistence.TaskanaAPI;
 import pro.taskana.data.generation.util.ClassificationType;
@@ -23,6 +22,7 @@ import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.ClassificationImpl;
 import pro.taskana.impl.TaskImpl;
 import pro.taskana.impl.WorkbasketImpl;
+
 
 /**
  * Class for creating test data.
