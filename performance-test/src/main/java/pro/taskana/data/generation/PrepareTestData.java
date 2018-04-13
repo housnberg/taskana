@@ -9,20 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pro.taskana.TaskState;
-<<<<<<< ba1f7eede2a3305924a95f56352f34da3f943827
-import pro.taskana.WorkbasketAccessItem;
-=======
-
->>>>>>> Workbaskets get persistet by API 
 import pro.taskana.data.generation.builder.ClassificationBuilder;
 import pro.taskana.data.generation.builder.TaskBuilder;
-<<<<<<< ba1f7eede2a3305924a95f56352f34da3f943827
 import pro.taskana.data.generation.builder.WorkbasketStructureBuilder;
-import pro.taskana.data.generation.persistence.PersistenceService;
-=======
->>>>>>> Workbaskets get persistet by API 
 import pro.taskana.data.generation.persistence.TaskanaAPI;
-import pro.taskana.data.generation.util.*;
+import pro.taskana.data.generation.util.ClassificationType;
+import pro.taskana.data.generation.util.DomainPrinter;
+import pro.taskana.data.generation.util.ElementStack;
+import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.ClassificationImpl;
 import pro.taskana.impl.TaskImpl;
 import pro.taskana.impl.WorkbasketAccessItemImpl;
