@@ -39,8 +39,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import pro.taskana.rest.resource.DistributionTargetResource;
 import pro.taskana.rest.resource.WorkbasketSummaryResource;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(RestConfiguration.class)
 public class WorkbasketControllerIntTest {
 
