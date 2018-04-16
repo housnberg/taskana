@@ -137,7 +137,7 @@ public class WorkbasketStructureBuilder {
 	public ElementStack<WorkbasketWrapper> createSimpleWorkbaskets(int amount) {
 		List<WorkbasketWrapper> wbs = workbasketBuilder.generateWorkbaskets(amount);
 		for (WorkbasketWrapper wb : wbs) {
-            accesItemBuilder.forUser(wb.getOwnerAsUser()).hasAccess(AccessType.READ, AccessType.APPEND, AccessType.OPEN, AccessType.TRANSFER).to(wb).build();;
+            accesItemBuilder.forUser(wb.getOwnerAsUser()).hasAccess(AccessType.READ, AccessType.APPEND, AccessType.OPEN, AccessType.TRANSFER).to(wb).build();
         }
 		lastGeneratedLayer = wbs;
 		return new ElementStack<>(wbs);
