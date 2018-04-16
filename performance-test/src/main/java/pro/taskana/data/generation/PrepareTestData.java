@@ -81,7 +81,7 @@ public class PrepareTestData {
         Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
 
         //Build tasks
-        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 150000);
+       TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 150000);
         
         List<WorkbasketWrapper> wbsWithTasks = WorkbasketStructureBuilder.getWorkbasketsForLayer(layer0);
         
@@ -135,8 +135,8 @@ public class PrepareTestData {
         TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 50000);
         List<TaskImpl> tasks = taskBuilder
                 .affect(halveList(wbsWithTasks))
-                .addTasks(TaskState.COMPLETED, 5000) 
-                .addTasks(TaskState.CLAIMED, 2500) 
+                .addTasks(TaskState.COMPLETED, 5000)
+                .addTasks(TaskState.CLAIMED, 2500)
                 .addTasks(TaskState.READY, 2500)
                 .withAttachments(1)
                 .withObjectReferences(2)
@@ -214,17 +214,17 @@ public class PrepareTestData {
                 .addTasks(TaskState.CLAIMED, 50)
                 .addTasks(TaskState.READY, 50)
                 .withObjectReferences(2)
-                .withAttachments(2)
+                .withAttachments(0)
                 .build();
         taskana.createTasks(tasks);
     }
 
     private static Map<ClassificationType, List<ClassificationImpl>> createClassificationsForDomain(String domain) {
         ClassificationBuilder classificationBuilder = new ClassificationBuilder(domain);
-        classificationBuilder.newClassificationCategory("Maschinell").withType(ClassificationType.AUFGABENTYP).withChildren(100).build();
-        classificationBuilder.newClassificationCategory("Manuell").withType(ClassificationType.AUFGABENTYP).withChildren(100).build();
-        classificationBuilder.newClassificationCategory("Extern").withType(ClassificationType.AUFGABENTYP).withChildren(100).build();
-        classificationBuilder.newClassificationCategory("Doktyp_Extern").withType(ClassificationType.DOKUMENTTYP).withChildren(100)
+        classificationBuilder.newClassificationCategory("MASCHINELL").withType(ClassificationType.AUFGABENTYP).withChildren(100).build();
+        classificationBuilder.newClassificationCategory("MANUELL").withType(ClassificationType.AUFGABENTYP).withChildren(100).build();
+        classificationBuilder.newClassificationCategory("EXTERN").withType(ClassificationType.AUFGABENTYP).withChildren(100).build();
+        classificationBuilder.newClassificationCategory("DOKTYP_EXTERN").withType(ClassificationType.DOKUMENTTYP).withChildren(100)
                 .build();
         taskana.createClassification(classificationBuilder.getAllGeneratedClassifications());
         return classificationBuilder.getClassificationsByType();
