@@ -75,7 +75,7 @@ public class PrepareTestData {
         Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
 
         //Build tasks
-        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 150000);
+       TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 150000);
         
         List<WorkbasketWrapper> wbsWithTasks = WorkbasketStructureBuilder.getWorkbasketsForLayer(layer0);
 
