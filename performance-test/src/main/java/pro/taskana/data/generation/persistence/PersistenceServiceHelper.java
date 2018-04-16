@@ -13,14 +13,14 @@ import pro.taskana.impl.WorkbasketImpl;
  * @author EL
  */
 public final class PersistenceServiceHelper {
-    public static final String SQL_CREATE_WORKBASKET = "INSERT INTO WORKBASKET"
+    public static final String SQL_CREATE_WORKBASKET = "INSERT INTO TASKANA.WORKBASKET"
             + " (ID, KEY, CREATED, MODIFIED, NAME, DOMAIN, TYPE, DESCRIPTION,"
             + " OWNER, CUSTOM_1, CUSTOM_2, CUSTOM_3, CUSTOM_4, ORG_LEVEL_1, ORG_LEVEL_2, ORG_LEVEL_3, ORG_LEVEL_4)"
             + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    public static final String SQL_CREATE_DISTRIBUTION_TARGET = "INSERT INTO DISTRIBUTION_TARGETS"
+    public static final String SQL_CREATE_DISTRIBUTION_TARGET = "INSERT INTO TASKANA.DISTRIBUTION_TARGETS"
             + " (SOURCE_ID, TARGET_ID)"
             + " VALUES (?, ?)";
-    public static final String SQL_CREATE_WORKBASKET_ACCESS_LIST = "INSERT INTO WORKBASKET_ACCESS_LIST"
+    public static final String SQL_CREATE_WORKBASKET_ACCESS_LIST = "INSERT INTO TASKANA.WORKBASKET_ACCESS_LIST"
             + " (ID, WORKBASKET_ID, ACCESS_ID, PERM_READ, PERM_OPEN, PERM_APPEND, PERM_TRANSFER, PERM_DISTRIBUTE,"
             + " PERM_CUSTOM_1, PERM_CUSTOM_2, PERM_CUSTOM_3, PERM_CUSTOM_4, PERM_CUSTOM_5, PERM_CUSTOM_6, PERM_CUSTOM_7, PERM_CUSTOM_8, PERM_CUSTOM_9,"
             + " PERM_CUSTOM_10, PERM_CUSTOM_11, PERM_CUSTOM_12)"

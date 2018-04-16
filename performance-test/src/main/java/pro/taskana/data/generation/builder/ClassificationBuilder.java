@@ -58,8 +58,7 @@ public class ClassificationBuilder {
         result.add(classificationParent);
         
         for (int i = 0; i < numberOfChildren; i++) {
-            String categoryOfChild = CHILD_CATEGORY_PREFIX + i + PREFIX_CATEGROY_SEPARATOR + category;
-            ClassificationImpl classificationChild = generateClassification(categoryOfChild, type, classificationParent.getId());
+            ClassificationImpl classificationChild = generateClassification(category, type, classificationParent.getId());
             result.add(classificationChild);
         }
         
@@ -77,14 +76,12 @@ public class ClassificationBuilder {
     private ClassificationImpl generateClassification(String category, ClassificationType type, String parentId) {
         ClassificationWrapper classification = new ClassificationWrapper();
         classification.setCategory(category);
-        classification.setKey(category);
         classification.setType(type.toString());
-        if(parentId == null) {
-            classification.setId(type.toString() + PREFIX_CATEGROY_SEPARATOR + category);
-        } else {
+        if(parentId != null) {
             classification.setParentId(parentId);
-            classification.setId(UUID.randomUUID().toString());
         }
+        classification.setId(UUID.randomUUID().toString());
+        classification.setKey(classification.getId().substring(0, 32));
         classification.setDomain(domain);
         classification.setIsValidInDomain(true);
         classification.setCreated(Instant.now());
