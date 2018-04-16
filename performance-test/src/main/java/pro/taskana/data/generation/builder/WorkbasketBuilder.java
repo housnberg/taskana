@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import pro.taskana.WorkbasketType;
 import pro.taskana.data.generation.util.DateHelper;
+import pro.taskana.data.generation.util.UserWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.WorkbasketImpl;
 
@@ -91,7 +92,8 @@ public class WorkbasketBuilder {
 
 	private WorkbasketWrapper generatePersonalWorkbasketWithOwner() {
 		WorkbasketWrapper wb = createWorkbasket(WorkbasketType.PERSONAL);
-		wb.setUserAsOwner(userBuilder.generateNewUser());
+		UserWrapper uw = userBuilder.generateNewUser();
+		wb.setUserAsOwner(uw);
 		return wb;
 	}
 
