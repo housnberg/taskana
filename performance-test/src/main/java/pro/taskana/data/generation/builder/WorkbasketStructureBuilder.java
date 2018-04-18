@@ -12,7 +12,6 @@ import pro.taskana.data.generation.util.UserWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.WorkbasketAccessItemImpl;
 import pro.taskana.impl.WorkbasketImpl;
-import pro.taskana.impl.report.impl.WorkbasketLevelReport;
 
 /**
  * Class encapsulates all configuration options for creating a domain.
