@@ -75,8 +75,8 @@ public class WorkbasketBuilder {
 	 * 
 	 * @return created workba{@link Workbasket}skets
 	 */
-	public List<WorkbasketImpl> getGeneratedWorkbaskets() {
-		return generatedWorkbaskets.stream().map(wrapper -> wrapper.getAsWorkbasket()).collect(Collectors.toList());
+	public List<WorkbasketWrapper> getGeneratedWorkbaskets() {
+		return generatedWorkbaskets;
 	}
 
 	private WorkbasketWrapper generateGroupWorkbasketWithoutOwner() {
