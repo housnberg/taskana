@@ -13,9 +13,6 @@ import pro.taskana.data.generation.util.ClassificationWrapper;
 import pro.taskana.impl.ClassificationImpl;
 
 public class ClassificationBuilder {
-
-    private static final String CHILD_CATEGORY_PREFIX = "SC";
-    private static final String PREFIX_CATEGROY_SEPARATOR = "_";
     
     private Map<ClassificationType, List<ClassificationImpl>> classificationsByType;
     
@@ -54,11 +51,11 @@ public class ClassificationBuilder {
     public List<ClassificationImpl> build() {
         List<ClassificationImpl> result = new ArrayList<>();
         
-        ClassificationImpl classificationParent = generateClassification(category, type, null);
+        ClassificationImpl classificationParent = generateClassification(category, type, null, -1);
         result.add(classificationParent);
         
         for (int i = 0; i < numberOfChildren; i++) {
-            ClassificationImpl classificationChild = generateClassification(category, type, classificationParent.getId());
+            ClassificationImpl classificationChild = generateClassification(category, type, classificationParent.getId(), i);
             result.add(classificationChild);
         }
         
@@ -73,15 +70,18 @@ public class ClassificationBuilder {
         return classificationsByType;
     }
     
-    private ClassificationImpl generateClassification(String category, ClassificationType type, String parentId) {
+    private ClassificationImpl generateClassification(String category, ClassificationType type, String parentId, int childIndex) {
         ClassificationWrapper classification = new ClassificationWrapper();
         classification.setCategory(category);
         classification.setType(type.toString());
         if(parentId != null) {
             classification.setParentId(parentId);
+            classification.setKey(category + "_" + childIndex);
+        } else {
+            classification.setKey(category);
         }
         classification.setId(UUID.randomUUID().toString());
-        classification.setKey(classification.getId().substring(0, 32));
+        
         classification.setDomain(domain);
         classification.setIsValidInDomain(true);
         classification.setCreated(Instant.now());

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
@@ -88,7 +89,8 @@ public class PersistenceService {
         try {
             insertIntoWbAccessList = connection.prepareStatement(PersistenceServiceHelper.SQL_CREATE_WORKBASKET_ACCESS_LIST);
 
-            for (WorkbasketAccessItem workbasketAccessItem : generatedAccessItems) {
+            HashSet<WorkbasketAccessItem> ais = new HashSet<>(generatedAccessItems);
+            for (WorkbasketAccessItem workbasketAccessItem : ais) {
                 PersistenceServiceHelper.setWorkbasketAccessItemParams(insertIntoWbAccessList, workbasketAccessItem);
 
                 insertIntoWbAccessList.execute();
