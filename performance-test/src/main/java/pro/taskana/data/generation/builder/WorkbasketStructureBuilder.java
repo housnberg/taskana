@@ -11,6 +11,7 @@ import pro.taskana.data.generation.util.ElementStack;
 import pro.taskana.data.generation.util.UserWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.WorkbasketImpl;
+import pro.taskana.impl.report.impl.WorkbasketLevelReport;
 
 /**
  * Class encapsulates all configuration options for creating a domain.
@@ -135,7 +136,7 @@ public class WorkbasketStructureBuilder {
 	public ElementStack<WorkbasketWrapper> createSimpleWorkbaskets(int amount) {
 		List<WorkbasketWrapper> wbs = workbasketBuilder.generateWorkbaskets(amount);
 		for (WorkbasketWrapper wb : wbs) {
-            accesItemBuilder.forUser(wb.getOwnerAsUser()).hasAccess(AccessType.READ, AccessType.APPEND, AccessType.OPEN, AccessType.TRANSFER).to(wb);
+            accesItemBuilder.forUser(wb.getOwnerAsUser()).hasAccess(AccessType.READ, AccessType.APPEND, AccessType.OPEN, AccessType.TRANSFER).to(wb).build();;
         }
 		lastGeneratedLayer = wbs;
 		return new ElementStack<>(wbs);
@@ -181,7 +182,9 @@ public class WorkbasketStructureBuilder {
 	 * @return created {@link Workbasket}
 	 */
 	public List<WorkbasketImpl> getGeneratedWorkbaskets() {
-		return workbasketBuilder.getGeneratedWorkbaskets();
+	    List<WorkbasketWrapper> wbs = workbasketBuilder.getGeneratedWorkbaskets();
+	    
+		return wbs.stream().map(wrapper -> wrapper.getAsWorkbasket()).collect(Collectors.toList());
 	}
 
 	/**
@@ -204,17 +207,25 @@ public class WorkbasketStructureBuilder {
 
 	private List<WorkbasketWrapper> buildWorkbaskets(int numberOfDirectDistTargets, int quantity,
 			ElementStack<WorkbasketWrapper> workbasketPool) {
-		List<WorkbasketWrapper> newWorkbaskets = workbasketBuilder.generateManagingWorkbaskets(quantity, newOwner);
+		List<WorkbasketWrapper> newWorkbaskets = generateManagingWorkbaskets();
 		addAdditionalDistributionTargetsToWorkbaskets(numberOfDirectDistTargets, newWorkbaskets, workbasketPool);
 		return newWorkbaskets;
 	}
 
 	private List<WorkbasketWrapper> buildWorkbaskets(int quantity, List<WorkbasketWrapper> distTargets) {
-		List<WorkbasketWrapper> newWorkbaskets = workbasketBuilder.generateManagingWorkbaskets(quantity, newOwner);
+		List<WorkbasketWrapper> newWorkbaskets = generateManagingWorkbaskets();
 		newWorkbaskets.forEach(wb -> buildGroup(wb, distTargets));
 		return newWorkbaskets;
 	}
-
+	
+	private List<WorkbasketWrapper> generateManagingWorkbaskets() {
+	       List<WorkbasketWrapper> newWorkbaskets = workbasketBuilder.generateManagingWorkbaskets(quantity, newOwner);
+	        newWorkbaskets.stream().filter(wb -> wb.getOwnerAsUser() != null)
+	            .forEach(wb -> accesItemBuilder.forUser(wb.getOwnerAsUser()).
+	                        hasAccess(AccessType.READ, AccessType.APPEND, AccessType.OPEN, AccessType.TRANSFER).to(wb).build());
+	        return newWorkbaskets;
+	}
+	
 	private void addAdditionalDistributionTargetsToWorkbaskets(int numberOfDirectDistTargets,
 			List<WorkbasketWrapper> generatedworkbaskets, ElementStack<WorkbasketWrapper> workbasketPool) {
 
