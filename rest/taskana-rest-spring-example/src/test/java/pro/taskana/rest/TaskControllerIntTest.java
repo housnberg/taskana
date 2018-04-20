@@ -42,8 +42,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pro.taskana.rest.resource.TaskSummaryResource;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(RestConfiguration.class)
 public class TaskControllerIntTest {
 
