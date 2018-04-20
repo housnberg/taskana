@@ -23,7 +23,6 @@ import pro.taskana.impl.WorkbasketAccessItemImpl;
 import pro.taskana.impl.WorkbasketImpl;
 
 
-
 /**
  * Class for creating test data.
  *
