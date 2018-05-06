@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pro.taskana.configuration.TaskanaEngineConfiguration;
-import pro.taskana.data.generation.util.ClassificationWrapper;
 import pro.taskana.data.generation.util.TaskWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.ClassificationService;

@@ -156,7 +156,7 @@ public class PrepareTestData {
         TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 300000);
 
         List<TaskWrapper> tasks = taskBuilder.affect(halveList(wbsWith0Attachments)).addTasks(TaskState.COMPLETED, 100)
-                .addTasks(TaskState.CLAIMED, 50).addTasks(TaskState.READY, 50).withObjectReferences(2).build();
+                .addTasks(TaskState.CLAIMED, 50).addTasks(TaskState.READY, 50).withAttachments(0).withObjectReferences(2).build();
         taskana.createTasks(tasks);
 
         tasks = taskBuilder.affect(halveList(wbsWith1Attachment)).addTasks(TaskState.COMPLETED, 100)
@@ -166,7 +166,7 @@ public class PrepareTestData {
 
         tasks = taskBuilder.affect(halveList(wbsWith2Attachments)).addTasks(TaskState.COMPLETED, 100)
                 .addTasks(TaskState.CLAIMED, 50).addTasks(TaskState.READY, 50).withObjectReferences(2)
-                .withAttachments(0).build();
+                .withAttachments(2).build();
         taskana.createTasks(tasks);
         return new DataWrapper(structureBuilder.getGeneratedWorkbasketsAsWrapper(), tasks);
     }
