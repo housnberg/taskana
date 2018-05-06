@@ -3,6 +3,7 @@ package pro.taskana.data.generation.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import pro.taskana.Task;
 import pro.taskana.WorkbasketType;
 import pro.taskana.data.generation.builder.WorkbasketBuilder;
 import pro.taskana.impl.WorkbasketImpl;
@@ -31,8 +32,10 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     private List<WorkbasketWrapper> directOrIndirectChildren;
     private List<WorkbasketWrapper> directChildren;
     private UserWrapper userWrapper;
+    private List<Task> tasks;
 
     public WorkbasketWrapper(WorkbasketType type, String domain) {
+        this.tasks = new ArrayList<>();
         this.setType(type);
         this.setDomain(domain);
         this.layer = 0;
@@ -50,6 +53,14 @@ public class WorkbasketWrapper extends WorkbasketImpl {
      */
     public void setLayer(int layer) {
         this.layer = layer;
+    }
+    
+    public void addTask(Task task) {
+        this.tasks.add(task);
+    }
+    
+    public List<Task> getTasks() {
+        return tasks;
     }
 
     /**

@@ -186,6 +186,10 @@ public class WorkbasketStructureBuilder {
 	    
 		return wbs.stream().map(wrapper -> wrapper.getAsWorkbasket()).collect(Collectors.toList());
 	}
+	
+	public List<WorkbasketWrapper> getGeneratedWorkbasketsAsWrapper() {
+	    return workbasketBuilder.getGeneratedWorkbaskets();
+	}
 
 	/**
 	 * Supplies all user ids as {@link UserWrapper} which are used in the domain.
