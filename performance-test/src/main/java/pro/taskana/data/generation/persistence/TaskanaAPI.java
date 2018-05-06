@@ -7,13 +7,19 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pro.taskana.*;
 import pro.taskana.configuration.TaskanaEngineConfiguration;
 import pro.taskana.data.generation.util.ClassificationWrapper;
 import pro.taskana.data.generation.util.TaskWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
-import pro.taskana.exceptions.*;
-import pro.taskana.impl.*;
+import pro.taskana.ClassificationService;
+import pro.taskana.Task;
+import pro.taskana.TaskService;
+import pro.taskana.TaskanaEngine;
+import pro.taskana.WorkbasketService;
+import pro.taskana.impl.ClassificationImpl;
+import pro.taskana.impl.TaskanaEngineImpl;
+import pro.taskana.impl.WorkbasketAccessItemImpl;
+import pro.taskana.impl.WorkbasketImpl;
 
 public class TaskanaAPI {
     
@@ -37,8 +43,9 @@ public class TaskanaAPI {
      * Persists all given Tasks via the Taskana API.
      * @param tasks The Tasks to persist.
      */
-    public void createTasks(List<TaskImpl> tasks) {
-        for (TaskImpl task : tasks) {
+    public void createTasks(List<TaskWrapper> tasks) {
+        for (Task task : tasks) {
+
             try {
                 taskService.createTask(task);
             } catch (Exception e) {
