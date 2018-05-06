@@ -81,7 +81,7 @@ public class ClassificationBuilder {
             classification.setKey(category);
         }
         classification.setId(UUID.randomUUID().toString());
-        
+                
         classification.setDomain(domain);
         classification.setIsValidInDomain(true);
         classification.setCreated(Instant.now());
