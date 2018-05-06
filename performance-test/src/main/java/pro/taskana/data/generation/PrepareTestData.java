@@ -9,18 +9,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pro.taskana.TaskState;
+<<<<<<< ba1f7eede2a3305924a95f56352f34da3f943827
 import pro.taskana.WorkbasketAccessItem;
+=======
+
+>>>>>>> Workbaskets get persistet by API 
 import pro.taskana.data.generation.builder.ClassificationBuilder;
 import pro.taskana.data.generation.builder.TaskBuilder;
+<<<<<<< ba1f7eede2a3305924a95f56352f34da3f943827
 import pro.taskana.data.generation.builder.WorkbasketStructureBuilder;
 import pro.taskana.data.generation.persistence.PersistenceService;
+=======
+>>>>>>> Workbaskets get persistet by API 
 import pro.taskana.data.generation.persistence.TaskanaAPI;
-import pro.taskana.data.generation.util.ClassificationType;
-import pro.taskana.data.generation.util.DomainPrinter;
-import pro.taskana.data.generation.util.ElementStack;
-import pro.taskana.data.generation.util.WorkbasketWrapper;
+import pro.taskana.data.generation.util.*;
 import pro.taskana.impl.ClassificationImpl;
 import pro.taskana.impl.TaskImpl;
+import pro.taskana.impl.WorkbasketAccessItemImpl;
 import pro.taskana.impl.WorkbasketImpl;
 
 
@@ -34,7 +39,6 @@ import pro.taskana.impl.WorkbasketImpl;
 public class PrepareTestData {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PrepareTestData.class);
-    private static PersistenceService persistenceService;
     private static TaskanaAPI taskana;
 
     /**
@@ -46,7 +50,6 @@ public class PrepareTestData {
      * @throws FileNotFoundException
      */
     public static void main(String[] args) throws FileNotFoundException, NoSuchFieldException, SQLException {
-        persistenceService = new PersistenceService();
         taskana = new TaskanaAPI();
 
         buildDomainA();
@@ -82,10 +85,10 @@ public class PrepareTestData {
         Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
 
         //Build tasks
-       TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 150000);
+        TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 150000);
         
         List<WorkbasketWrapper> wbsWithTasks = WorkbasketStructureBuilder.getWorkbasketsForLayer(layer0);
-        
+
         List<TaskImpl> tasks = taskBuilder
                 .affect(halveList(wbsWithTasks))
                 .addTasks(TaskState.COMPLETED, 30000)
@@ -94,6 +97,7 @@ public class PrepareTestData {
                 .withObjectReferences(2)
                 .build();
         taskana.createTasks(tasks);
+
     }
 
     /**
@@ -233,15 +237,16 @@ public class PrepareTestData {
 
     private static void persistDomain(WorkbasketStructureBuilder domainBuilder) {
         LOGGER.info("Persisting domain {}", domainBuilder.getDomainName());
-        List<WorkbasketImpl> wbs = domainBuilder.getGeneratedWorkbaskets();
-        List<WorkbasketAccessItem> wbAi = domainBuilder.getGeneratedAccessItems();
+        List<WorkbasketImpl> workbaskets = domainBuilder.getGeneratedWorkbaskets();
+        List<WorkbasketAccessItemImpl> workbasketAccessItems = domainBuilder.getGeneratedAccessItems();
 
-        persistenceService.persistWorkbaskets(wbs);
-        persistenceService.persistAccessItems(wbAi);
+        taskana.createWorkbaskets(workbaskets);
+        taskana.createWorkbasketAccesItem(workbasketAccessItems);
+
 
         DomainPrinter.printStructureOfDomain(domainBuilder);
         LOGGER.info("Domain {} with {} workbaskets, {} users and {} builded.",
-                domainBuilder.getDomainName(), wbs.size(), domainBuilder.getGeneratedUsers().size(), wbAi.size());
+                domainBuilder.getDomainName(), workbaskets.size(), domainBuilder.getGeneratedUsers().size(), workbasketAccessItems.size());
     }
 
     private static List<WorkbasketWrapper> halveList(List<WorkbasketWrapper> listToHalve) {

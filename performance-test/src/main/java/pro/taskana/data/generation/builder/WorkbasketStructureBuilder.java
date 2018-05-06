@@ -10,6 +10,7 @@ import pro.taskana.data.generation.util.AccessType;
 import pro.taskana.data.generation.util.ElementStack;
 import pro.taskana.data.generation.util.UserWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
+import pro.taskana.impl.WorkbasketAccessItemImpl;
 import pro.taskana.impl.WorkbasketImpl;
 import pro.taskana.impl.report.impl.WorkbasketLevelReport;
 
@@ -201,7 +202,7 @@ public class WorkbasketStructureBuilder {
 	 * 
 	 * @return all {@link WorkbasketAccessItem}
 	 */
-	public List<WorkbasketAccessItem> getGeneratedAccessItems() {
+	public List<WorkbasketAccessItemImpl> getGeneratedAccessItems() {
 		return accesItemBuilder.getGeneratedAccessItems();
 	}
 
@@ -268,10 +269,10 @@ public class WorkbasketStructureBuilder {
 	}
         
         /**
-         * Returns all {@link Workbasket} for a given Layer.
+         * Returns all {@link Workbasket}s for a given Layer.
          * 
-         * @param layer The layer with all {@link Workbasket}
-         * @return all {@link Workbasket} for the layer.
+         * @param layer The layer with all {@link Workbasket}s
+         * @return all {@link Workbasket}s for the layer.
          */
         public static List<WorkbasketWrapper> getWorkbasketsForLayer(List<WorkbasketWrapper> layer) {
             List<WorkbasketWrapper> workasketsInLayer = new ArrayList<>();

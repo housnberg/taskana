@@ -14,6 +14,7 @@ import pro.taskana.data.generation.util.AccessType;
 import pro.taskana.data.generation.util.UserWrapper;
 import pro.taskana.data.generation.util.WorkbasketAccessItemWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
+import pro.taskana.impl.WorkbasketAccessItemImpl;
 
 /**
  * Class wraps the functionality for creating {@link WorkbasketAccessItem}.
@@ -143,7 +144,7 @@ public class AccessItemBuilder {
 	 * 
 	 * @return created {@link WorkbasketAccessItem}
 	 */
-	public List<WorkbasketAccessItem> getGeneratedAccessItems() {
+	public List<WorkbasketAccessItemImpl> getGeneratedAccessItems() {
 		return generatedAccessItems.stream().map(ai -> ai.getAsWorkbasketAccessItem()).collect(Collectors.toList());
 	}
 

@@ -71,9 +71,9 @@ public class WorkbasketBuilder {
 	}
 
 	/**
-	 * Supplies all generated {@link Workbasket}.
+	 * Supplies all generated {@link WorkbasketW}.
 	 * 
-	 * @return created workba{@link Workbasket}skets
+	 * @return created {@link WorkbasketWrapper}
 	 */
 	public List<WorkbasketWrapper> getGeneratedWorkbaskets() {
 		return generatedWorkbaskets;
