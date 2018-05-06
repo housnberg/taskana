@@ -7,10 +7,12 @@ public class DataWrapper {
 
     public final List<WorkbasketWrapper> workbaskets;
     public final List<TaskWrapper> tasks;
+    public final List<ClassificationWrapper> classifications;
     
-    public DataWrapper(List<WorkbasketWrapper> workbaskets, List<TaskWrapper> tasks) {
+    public DataWrapper(List<WorkbasketWrapper> workbaskets, List<TaskWrapper> tasks, List<ClassificationWrapper> classifications) {
         super();
         this.workbaskets = workbaskets;
+        this.classifications = classifications;
         this.tasks = tasks;
     }
     
@@ -22,7 +24,9 @@ public class DataWrapper {
         allWorkbaskets.addAll(other.workbaskets);
         List<TaskWrapper> allTasks = new ArrayList<>(tasks);
         allTasks.addAll(other.tasks);
-        return new DataWrapper(allWorkbaskets, allTasks);
+        List<ClassificationWrapper> allClassifications = new ArrayList<>();
+        allClassifications.addAll(other.classifications);
+        return new DataWrapper(allWorkbaskets, allTasks, allClassifications);
     }
     
 }
