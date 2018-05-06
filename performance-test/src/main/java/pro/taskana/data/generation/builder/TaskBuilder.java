@@ -8,13 +8,14 @@ import java.util.Random;
 
 import pro.taskana.TaskState;
 import pro.taskana.data.generation.util.ClassificationType;
+import pro.taskana.data.generation.util.ClassificationWrapper;
 import pro.taskana.data.generation.util.TaskWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.ClassificationImpl;
 
 public class TaskBuilder {
     
-    private List<ClassificationImpl> taskClassifications;
+    private List<ClassificationWrapper> taskClassifications;
     private Random rnd;
     private List<WorkbasketWrapper> affectedWorkbaskets;
     private Map<TaskState, Integer> taskDistribution;
@@ -25,7 +26,7 @@ public class TaskBuilder {
     private int numberOfAttachments;
     private int numberOfPORForTask;
     
-    public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications, int numberOfDifferentPOR, int maxAttachments) {
+    public TaskBuilder(Map<ClassificationType, List<ClassificationWrapper>> classifications, int numberOfDifferentPOR, int maxAttachments) {
         this.taskDistribution = new HashMap<>();
         this.affectedWorkbaskets = new ArrayList<>();
         this.taskClassifications = classifications.get(ClassificationType.AUFGABENTYP);
@@ -36,7 +37,7 @@ public class TaskBuilder {
         objectReferenceBuilder = new ObjectReferenceBuilder(numberOfDifferentPOR);
     }
     
-    public TaskBuilder(Map<ClassificationType, List<ClassificationImpl>> classifications, int numberOfPOR) {
+    public TaskBuilder(Map<ClassificationType, List<ClassificationWrapper>> classifications, int numberOfPOR) {
         this(classifications, numberOfPOR, 0);
     }
     

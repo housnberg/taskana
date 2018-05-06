@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import pro.taskana.data.generation.persistence.TaskanaAPI;
 import pro.taskana.impl.ClassificationImpl;
 import pro.taskana.impl.WorkbasketAccessItemImpl;
 import pro.taskana.data.generation.util.ClassificationType;
+import pro.taskana.data.generation.util.ClassificationWrapper;
 import pro.taskana.data.generation.util.DataWrapper;
 import pro.taskana.data.generation.util.ElementStack;
 import pro.taskana.data.generation.util.TaskWrapper;
@@ -82,7 +84,7 @@ public class PrepareTestData {
         persistDomain(structureBuilder);
 
         // Build classifications
-        Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("A");
+        Map<ClassificationType, List<ClassificationWrapper>> classificationsByType = createClassificationsForDomain("A");
 
         // Build tasks
         TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 150000);
@@ -93,7 +95,8 @@ public class PrepareTestData {
                 .addTasks(TaskState.CLAIMED, 15000).addTasks(TaskState.READY, 15000).withObjectReferences(2).build();
         taskana.createTasks(tasks);
 
-        return new DataWrapper(structureBuilder.getGeneratedWorkbasketsAsWrapper(), tasks);
+        return new DataWrapper(structureBuilder.getGeneratedWorkbasketsAsWrapper(), tasks, classificationsByType.values().stream().flatMap(List::stream)
+                .collect(Collectors.toList()));
     }
 
     private static DataWrapper buildDomainB() {
@@ -113,7 +116,7 @@ public class PrepareTestData {
         persistDomain(structureBuilder);
 
         // Build classifications
-        Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("B");
+        Map<ClassificationType, List<ClassificationWrapper>> classificationsByType = createClassificationsForDomain("B");
 
         List<WorkbasketWrapper> wbsWithTasks = WorkbasketStructureBuilder.getWorkbasketsForLayer(layer0);
 
@@ -123,7 +126,8 @@ public class PrepareTestData {
                 .addTasks(TaskState.CLAIMED, 2500).addTasks(TaskState.READY, 2500).withAttachments(1)
                 .withObjectReferences(2).build();
         taskana.createTasks(tasks);
-        return new DataWrapper(structureBuilder.getGeneratedWorkbasketsAsWrapper(), tasks);
+        return new DataWrapper(structureBuilder.getGeneratedWorkbasketsAsWrapper(), tasks, classificationsByType.values().stream().flatMap(List::stream)
+                .collect(Collectors.toList()));
     }
 
     private static DataWrapper buildDomainC() {
@@ -145,7 +149,7 @@ public class PrepareTestData {
         persistDomain(structureBuilder);
 
         // Build classifications
-        Map<ClassificationType, List<ClassificationImpl>> classificationsByType = createClassificationsForDomain("C");
+        Map<ClassificationType, List<ClassificationWrapper>> classificationsByType = createClassificationsForDomain("C");
 
         List<WorkbasketWrapper> wbsWith0Attachments = WorkbasketStructureBuilder
                 .getWorkbasketsForLayer(uppermostLayer.get(0).getDirectChildren());
@@ -170,10 +174,11 @@ public class PrepareTestData {
                 .addTasks(TaskState.CLAIMED, 50).addTasks(TaskState.READY, 50).withObjectReferences(2)
                 .withAttachments(2).build();
         taskana.createTasks(tasks);
-        return new DataWrapper(structureBuilder.getGeneratedWorkbasketsAsWrapper(), tasks);
+        return new DataWrapper(structureBuilder.getGeneratedWorkbasketsAsWrapper(), tasks, classificationsByType.values().stream().flatMap(List::stream)
+                .collect(Collectors.toList()));
     }
 
-    private static Map<ClassificationType, List<ClassificationImpl>> createClassificationsForDomain(String domain) {
+    private static Map<ClassificationType, List<ClassificationWrapper>> createClassificationsForDomain(String domain) {
         ClassificationBuilder classificationBuilder = new ClassificationBuilder(domain);
         classificationBuilder.newClassificationCategory("MASCHINELL").withType(ClassificationType.AUFGABENTYP)
                 .withChildren(100).build();
