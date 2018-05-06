@@ -15,6 +15,5 @@
         <modules>
                 <module>taskana-rest-spring</module>
                 <module>taskana-rest-spring-example</module>
-<module>taskana-rest-spring-performance-test</module>
         </modules>
 </project>

@@ -9,7 +9,7 @@ import pro.taskana.impl.WorkbasketImpl;
 
 /**
  * Class wraps the {@link WorkbasketImpl} to generate the id according to the
- * following pattern: Domain_+ WorkbasketType_+ CompoundOrgLayer_+ GroupId
+ * following pattern: Domain + WorkbasketType + CompoundOrgLayer_+ GroupId + XXXX (fill to 40 chars) <br/>
  *
  * @author fe
  *
@@ -20,7 +20,7 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     
     private static final int ID_LENGTH = 40;
     private static final String WORKBASKET_ID_PREFIX = "WB";
-    private static final char SEPERATOR = '_';
+    private static final char SEPARATOR = '_';
     private static final int INITIAL_MEMBER_ID = 0;
 
     private Integer memberId;
@@ -215,7 +215,7 @@ public class WorkbasketWrapper extends WorkbasketImpl {
             StringBuilder sb = new StringBuilder(getDomain());
             sb.append(WORKBASKET_ID_PREFIX);
             sb.append(formattedOrgLevel);
-            sb.append(SEPERATOR);
+            sb.append(SEPARATOR);
             sb.append(Formatter.format(getMemberId(), NUMBER_LENGTH_IN_ID));
             String id = sb.toString();
             setKey(id);
