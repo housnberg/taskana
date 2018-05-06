@@ -11,7 +11,6 @@ import pro.taskana.data.generation.util.ClassificationType;
 import pro.taskana.data.generation.util.TaskWrapper;
 import pro.taskana.data.generation.util.WorkbasketWrapper;
 import pro.taskana.impl.ClassificationImpl;
-import pro.taskana.impl.TaskImpl;
 
 public class TaskBuilder {
     
@@ -68,8 +67,8 @@ public class TaskBuilder {
         return this;
     }
     
-    public List<TaskImpl> build() {
-        List<TaskImpl> generatedTaks = new ArrayList<>();
+    public List<TaskWrapper> build() {
+        List<TaskWrapper> generatedTaks = new ArrayList<>();
         for (WorkbasketWrapper wb : affectedWorkbaskets) {
            generatedTaks.addAll(generateTasksForWorkbasket(wb));
            TaskWrapper.resetTaskCountInWorkbasket();
@@ -77,19 +76,19 @@ public class TaskBuilder {
         return generatedTaks;
     }
     
-    private List<TaskImpl> generateTasksForWorkbasket(WorkbasketWrapper workbasket) {
-        List<TaskImpl> tasksInWb = new ArrayList<>();
+    private List<TaskWrapper> generateTasksForWorkbasket(WorkbasketWrapper workbasket) {
+        List<TaskWrapper> tasksInWb = new ArrayList<>();
         for (TaskState state : taskDistribution.keySet()) {
-            List<TaskImpl> tasksInState = generateTasks(workbasket, state, taskDistribution.get(state));
+            List<TaskWrapper> tasksInState = generateTasks(workbasket, state, taskDistribution.get(state));
             tasksInWb.addAll(tasksInState);
         }
         return tasksInWb;
     }
     
-    private List<TaskImpl> generateTasks(WorkbasketWrapper workbasket, TaskState state, int quantity) {
-        List<TaskImpl> tasks = new ArrayList<>();
+    private List<TaskWrapper> generateTasks(WorkbasketWrapper workbasket, TaskState state, int quantity) {
+        List<TaskWrapper> tasks = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
-            TaskImpl task = new TaskWrapper(workbasket.getKey(), state);
+            TaskWrapper task = new TaskWrapper(workbasket, state);
             task.setOwner(workbasket.getOwner());
             task.setNote(workbasket.getOwner());
             task.setWorkbasketKey(workbasket.getKey());
@@ -97,8 +96,7 @@ public class TaskBuilder {
             
             int rndIndex = rnd.nextInt(taskClassifications.size());
             ClassificationImpl taskClassification = taskClassifications.get(rndIndex);
-            String classificationKey = taskClassification.getKey();
-            task.setClassificationKey(classificationKey);
+            task.setClassification(taskClassification);
             
             task.setPrimaryObjRef(objectReferenceBuilder.getObjectReference());
             for (int j = 0; j < numberOfPORForTask-1; j++) {

@@ -8,11 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pro.taskana.ClassificationService;
+import pro.taskana.Task;
 import pro.taskana.TaskService;
 import pro.taskana.TaskanaEngine;
 import pro.taskana.configuration.TaskanaEngineConfiguration;
+import pro.taskana.data.generation.util.TaskWrapper;
 import pro.taskana.impl.ClassificationImpl;
-import pro.taskana.impl.TaskImpl;
 import pro.taskana.impl.TaskanaEngineImpl;
 
 public class TaskanaAPI {
@@ -32,8 +33,8 @@ public class TaskanaAPI {
         this.classificationService = taskanaEngine.getClassificationService();
     }
     
-    public void createTasks(List<TaskImpl> tasks) {
-        for (TaskImpl task : tasks) {
+    public void createTasks(List<TaskWrapper> tasks) {
+        for (Task task : tasks) {
             try {
                 taskService.createTask(task);
             } catch (Exception e) {
