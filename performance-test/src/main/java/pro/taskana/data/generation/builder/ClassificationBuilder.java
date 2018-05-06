@@ -2,6 +2,8 @@ package pro.taskana.data.generation.builder;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +16,8 @@ import pro.taskana.impl.ClassificationImpl;
 
 public class ClassificationBuilder {
     
-    private Map<ClassificationType, List<ClassificationImpl>> classificationsByType;
+    private Map<ClassificationType, List<ClassificationWrapper>> classificationsByType;
+    private static final List<String> CUSTOM_1_VALUES = Arrays.asList("ANR", "VNR", "RVNR", "KOLVNR");
     
     private final String domain;
     private String category;
@@ -66,7 +69,7 @@ public class ClassificationBuilder {
         return classificationsByType.values().stream().flatMap(List::stream).collect(Collectors.toList());
     }
     
-    public Map<ClassificationType, List<ClassificationImpl>> getClassificationsByType() {
+    public Map<ClassificationType, List<ClassificationWrapper>> getClassificationsByType() {
         return classificationsByType;
     }
     
@@ -85,6 +88,9 @@ public class ClassificationBuilder {
         classification.setDomain(domain);
         classification.setIsValidInDomain(true);
         classification.setCreated(Instant.now());
+        
+        Collections.shuffle(CUSTOM_1_VALUES);
+        classification.setCustom1(CUSTOM_1_VALUES.stream().collect(Collectors.joining(", ")));
         
         initClassificationTypeIfNeccessary(type);
         classificationsByType.get(type).add(classification);
