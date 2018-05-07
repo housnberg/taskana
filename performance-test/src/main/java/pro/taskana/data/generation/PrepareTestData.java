@@ -60,8 +60,8 @@ public class PrepareTestData {
 
         DataWrapper generatedData;
         generatedData = buildDomainA();
-        generatedData.union(buildDomainB());
-        generatedData.union(buildDomainC());
+        generatedData = generatedData.union(buildDomainB());
+        generatedData = generatedData.union(buildDomainC());
 
         if (outputDir != null) {
             if (outputDir != null && !Files.exists(outputDir)) {
