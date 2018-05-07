@@ -49,7 +49,7 @@ public class DataExporter<T> {
     
     public List<List<String>> generateFileContent() {                
         List<T> filteredObjects = objects.stream()
-                .filter(o -> predicates.stream().anyMatch(p -> p.test(o))).collect(Collectors.toList());
+                .filter(o -> predicates.stream().allMatch(p -> p.test(o))).collect(Collectors.toList());
         if(maxLines != null && filteredObjects.size() > maxLines) {
             filteredObjects = filteredObjects.subList(0, maxLines);
         }

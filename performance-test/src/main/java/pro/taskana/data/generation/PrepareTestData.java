@@ -18,7 +18,6 @@ import pro.taskana.data.generation.builder.ClassificationBuilder;
 import pro.taskana.data.generation.builder.WorkbasketStructureBuilder;
 import pro.taskana.data.generation.builder.TaskBuilder;
 import pro.taskana.data.generation.persistence.TaskanaAPI;
-import pro.taskana.impl.ClassificationImpl;
 import pro.taskana.impl.WorkbasketAccessItemImpl;
 import pro.taskana.data.generation.util.ClassificationType;
 import pro.taskana.data.generation.util.ClassificationWrapper;
@@ -63,8 +62,8 @@ public class PrepareTestData {
 
         DataWrapper generatedData;
         generatedData = buildDomainA();
-        generatedData.union(buildDomainB());
-        generatedData.union(buildDomainC());
+        generatedData = generatedData.union(buildDomainB());
+        generatedData = generatedData.union(buildDomainC());
 
         if (outputDir != null) {
             if (outputDir != null && !Files.exists(outputDir)) {
