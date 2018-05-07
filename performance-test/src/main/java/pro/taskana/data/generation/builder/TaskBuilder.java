@@ -94,7 +94,7 @@ public class TaskBuilder {
             task.setNote(workbasket.getOwner());
             task.setWorkbasketKey(workbasket.getKey());
             task.setWorkbasketSummary(workbasket.asSummary());
-            
+            task.setDomain(workbasket.getDomain());
             int rndIndex = rnd.nextInt(taskClassifications.size());
             ClassificationImpl taskClassification = taskClassifications.get(rndIndex);
             task.setClassification(taskClassification);
