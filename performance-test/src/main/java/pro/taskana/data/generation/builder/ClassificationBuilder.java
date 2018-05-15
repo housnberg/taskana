@@ -10,10 +10,16 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import pro.taskana.data.generation.util.ClassificationType;
-import pro.taskana.data.generation.util.ClassificationWrapper;
-import pro.taskana.impl.ClassificationImpl;
+import pro.taskana.Classification;
+import pro.taskana.data.enums.ClassificationType;
+import pro.taskana.data.wrapper.ClassificationWrapper;
 
+/**
+ * Builder for creating {@link Classification}.
+ * 
+ * @author fe
+ *
+ */
 public class ClassificationBuilder {
     
     private Map<ClassificationType, List<ClassificationWrapper>> classificationsByType;
@@ -51,21 +57,22 @@ public class ClassificationBuilder {
         return this;
     }
     
-    public List<ClassificationImpl> build() {
-        List<ClassificationImpl> result = new ArrayList<>();
+    public List<ClassificationWrapper> build() {
+        List<ClassificationWrapper> result = new ArrayList<>();
         
-        ClassificationImpl classificationParent = generateClassification(category, type, null, -1);
+        ClassificationWrapper classificationParent = generateClassification(category, type, null, -1);
         result.add(classificationParent);
         
         for (int i = 0; i < numberOfChildren; i++) {
-            ClassificationImpl classificationChild = generateClassification(category, type, classificationParent.getId(), i);
+            ClassificationWrapper classificationChild = generateClassification(category, type,
+                    classificationParent.getId(), i);
             result.add(classificationChild);
         }
         
         return result;
     }
     
-    public List<ClassificationImpl> getAllGeneratedClassifications() {
+    public List<ClassificationWrapper> getAllGeneratedClassifications() {
         return classificationsByType.values().stream().flatMap(List::stream).collect(Collectors.toList());
     }
     
@@ -73,7 +80,8 @@ public class ClassificationBuilder {
         return classificationsByType;
     }
     
-    private ClassificationImpl generateClassification(String category, ClassificationType type, String parentId, int childIndex) {
+    private ClassificationWrapper generateClassification(String category, ClassificationType type, String parentId,
+            int childIndex) {
         ClassificationWrapper classification = new ClassificationWrapper();
         classification.setCategory(category);
         classification.setType(type.toString());

@@ -1,4 +1,4 @@
-package pro.taskana.data.generation.util;
+package pro.taskana.data.enums;
 
 public enum ClassificationType {
     AUFGABENTYP, DOKUMENTTYP

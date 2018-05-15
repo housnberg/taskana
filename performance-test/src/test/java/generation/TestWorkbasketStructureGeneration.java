@@ -1,29 +1,24 @@
 package generation;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.util.Comparator;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import pro.taskana.data.enums.UserType;
 import pro.taskana.data.generation.builder.WorkbasketStructureBuilder;
-import pro.taskana.data.generation.util.DomainPrinter;
 import pro.taskana.data.generation.util.ElementStack;
 import pro.taskana.data.generation.util.Formatter;
-import pro.taskana.data.generation.util.UserType;
-import pro.taskana.data.generation.util.UserWrapper;
-import pro.taskana.data.generation.util.WorkbasketWrapper;
+import pro.taskana.data.wrapper.UserWrapper;
+import pro.taskana.data.wrapper.WorkbasketWrapper;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+public class TestWorkbasketStructureGeneration {
 
-public class TestPreparedData {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(TestPreparedData.class);
 	private static final String DOMAIN = "T";
-
 	private WorkbasketStructureBuilder domainBuilder;
 
 	@Before
@@ -33,12 +28,10 @@ public class TestPreparedData {
 
 	@Test
 	public void shouldVerifyStructureWithDepth1() {
-		LOGGER.info("Test workbasket structure with depth = 1.");
 		List<WorkbasketWrapper> workbaskets = domainBuilder.createSimpleWorkbaskets(6).toList();
 
 		// Necessary to force WorkbasketWrapper for building valid workbaskets
 		domainBuilder.getGeneratedWorkbaskets();
-		DomainPrinter.printStructureOfDomain(domainBuilder);
 		
 		for (int i = 0; i < workbaskets.size(); i++) {
 			WorkbasketWrapper wbLvl1 = workbaskets.get(i);
@@ -52,7 +45,6 @@ public class TestPreparedData {
 
 	@Test
 	public void shouldVerifyStructureWithDepth2() {
-		LOGGER.info("Test workbasket structure with depth = 2.");
 		ElementStack<WorkbasketWrapper> workbasketsLvl2 = domainBuilder.createSimpleWorkbaskets(4);
 		List<WorkbasketWrapper> workbasketsLvl1 = domainBuilder.newLayer().withWb(2).withNumberOfDistTargets(2)
 				.selectFrom(workbasketsLvl2).build();
@@ -60,7 +52,6 @@ public class TestPreparedData {
 		// Necessary to force WorkbasketWrapper for building valid workbaskets
 		domainBuilder.getGeneratedWorkbaskets();
 		workbasketsLvl1.sort(Comparator.comparing(x -> Integer.parseInt(x.getOrgLevel1())));
-		DomainPrinter.printStructureOfDomain(domainBuilder);
 
 		for (int i = 0; i < workbasketsLvl1.size(); i++) {
 			WorkbasketWrapper wbLvl1 = workbasketsLvl1.get(i);
@@ -82,7 +73,6 @@ public class TestPreparedData {
 
 	@Test
 	public void shouldVerifyStructureWithDepth3() {
-		LOGGER.info("Test workbasket structure with depth = 3.");
 		ElementStack<WorkbasketWrapper> workbasketsLvl3 = domainBuilder.createSimpleWorkbaskets(8);
 		List<WorkbasketWrapper> workbasketsLvl2 = domainBuilder.newLayer().withWb(4).withNumberOfDistTargets(2)
 				.selectFrom(workbasketsLvl3).build();
@@ -92,7 +82,6 @@ public class TestPreparedData {
 		// Necessary to force WorkbasketWrapper for building workbaskets
 		domainBuilder.getGeneratedWorkbaskets();
 		workbasketsLvl1.sort(Comparator.comparing(x -> Integer.parseInt(x.getOrgLevel1())));
-		DomainPrinter.printStructureOfDomain(domainBuilder);
 		
 		for (int i = 0; i < workbasketsLvl1.size(); i++) {
 			WorkbasketWrapper wbLvl1 = workbasketsLvl1.get(i);
@@ -121,7 +110,6 @@ public class TestPreparedData {
 
 	@Test
 	public void shouldVerifyStructureWithDepth4() {
-		LOGGER.info("Test workbasket structure with depth = 4.");
 		ElementStack<WorkbasketWrapper> workbasketsLvl4 = domainBuilder.createSimpleWorkbaskets(8);
 		List<WorkbasketWrapper> workbasketsLvl3 = domainBuilder.newLayer().withWb(4).withNumberOfDistTargets(2)
 				.selectFrom(workbasketsLvl4).build();
@@ -133,7 +121,6 @@ public class TestPreparedData {
 		// Necessary to force WorkbasketWrapper for building workbaskets
 		domainBuilder.getGeneratedWorkbaskets();
 		workbasketsLvl1.sort(Comparator.comparing(x -> Integer.parseInt(x.getOrgLevel1())));
-		DomainPrinter.printStructureOfDomain(domainBuilder);
 		
 		for (int i = 0; i < workbasketsLvl1.size(); i++) {
 			WorkbasketWrapper wbLvl1 = workbasketsLvl1.get(i);

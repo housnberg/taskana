@@ -1,4 +1,4 @@
-package pro.taskana.data.io;
+package pro.taskana.export.io;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Util class for creating new files.
+ * Utility class for creating new files.
  * 
  * @author Felix Eurich
  *
  */
 public class FileUtils {
 
-    private static final String DEFAULT_SEPARATOR = ", ";
+    private static final String DEFAULT_SEPARATOR = ",";
 
     private final Path outputDir;
     private final FileType fileType;

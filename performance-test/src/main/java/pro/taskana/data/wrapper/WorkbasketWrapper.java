@@ -1,11 +1,13 @@
-package pro.taskana.data.generation.util;
+package pro.taskana.data.wrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import pro.taskana.Task;
+import pro.taskana.Workbasket;
 import pro.taskana.WorkbasketType;
 import pro.taskana.data.generation.builder.WorkbasketBuilder;
+import pro.taskana.data.generation.util.Formatter;
 import pro.taskana.impl.WorkbasketImpl;
 
 /**
@@ -68,19 +70,17 @@ public class WorkbasketWrapper extends WorkbasketImpl {
      *
      * @return this as {@link Workbasket}
      */
-    public WorkbasketImpl getAsWorkbasket() {
+    public void initAttributes() {
         if (getId() == null || getId().isEmpty()) {
             calculateOrgLvl();
             if (!directChildren.isEmpty()) {            
-                directChildren.stream().map(c -> c.getAsWorkbasket());
+                directChildren.forEach(WorkbasketWrapper::initAttributes);
             }
             setOwner(userWrapper.getId());
             generateAndSetId();
             setName(getId());
             setDescription(getId());
         }
-
-        return this;
     }
 
     /**

@@ -1,4 +1,4 @@
-package pro.taskana.data.generation.persistence;
+package pro.taskana.persistence;
 
 import java.io.File;
 import java.io.FileInputStream;

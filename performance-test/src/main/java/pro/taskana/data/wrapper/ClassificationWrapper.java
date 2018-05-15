@@ -1,4 +1,4 @@
-package pro.taskana.data.generation.util;
+package pro.taskana.data.wrapper;
 
 import pro.taskana.impl.ClassificationImpl;
 

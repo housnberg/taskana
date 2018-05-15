@@ -3,7 +3,7 @@ package pro.taskana.data.generation.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import pro.taskana.data.generation.util.UserWrapper;
+import pro.taskana.data.wrapper.UserWrapper;
 
 /**
  * Class wraps the functionality for creating a new user as {@link UserWrapper}.
@@ -13,32 +13,32 @@ import pro.taskana.data.generation.util.UserWrapper;
  */
 public class UserBuilder {
 
-	private final String domainName;
-	private List<UserWrapper> generatedUsers;
+    private final String domainName;
+    private List<UserWrapper> generatedUsers;
 
-	public UserBuilder(String domainName) {
-		this.generatedUsers = new ArrayList<>();
-		this.domainName = domainName;
-	}
+    public UserBuilder(String domainName) {
+        this.generatedUsers = new ArrayList<>();
+        this.domainName = domainName;
+    }
 
-	/**
-	 * Created a new {@link UserWrapper} which encapsulate the user id.
-	 * 
-	 * @return new user as {@link UserWrapper}
-	 */
-	public UserWrapper generateNewUser() {
-		UserWrapper user = new UserWrapper(domainName);
-		generatedUsers.add(user);
-		return user;
-	}
+    /**
+     * Created a new {@link UserWrapper} which encapsulate the user id.
+     * 
+     * @return new user as {@link UserWrapper}
+     */
+    public UserWrapper generateNewUser() {
+        UserWrapper user = new UserWrapper(domainName);
+        generatedUsers.add(user);
+        return user;
+    }
 
-	/**
-	 * Supplies all generated {@link UserWrapper}.
-	 * 
-	 * @return created  {@link UserWrapper}
-	 */
-	public List<UserWrapper> getGeneratedUsers() {
-		return generatedUsers;
-	}
+    /**
+     * Supplies all generated {@link UserWrapper}.
+     * 
+     * @return created {@link UserWrapper}
+     */
+    public List<UserWrapper> getGeneratedUsers() {
+        return generatedUsers;
+    }
 
 }

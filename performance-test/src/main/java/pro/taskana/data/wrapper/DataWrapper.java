@@ -1,4 +1,4 @@
-package pro.taskana.data.generation.util;
+package pro.taskana.data.wrapper;
 
 import java.util.ArrayList;
 import java.util.List;
