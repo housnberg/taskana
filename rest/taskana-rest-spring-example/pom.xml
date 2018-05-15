@@ -31,7 +31,6 @@
 			<artifactId>taskana-rest-spring</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-<<<<<<< f9ec247cdaf883e40363ee814dbc6128c8ed34c7
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -63,7 +62,6 @@
 			<artifactId>taskana-web</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-=======
 		
         <dependency>
             <groupId>com.ibm.db2.jcc</groupId>
@@ -71,7 +69,7 @@
             <version>11.1.1.1</version>
         </dependency>
 		
->>>>>>> Improvements
+
 		<!-- Tests -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -87,9 +85,6 @@
 			</plugin>
 		</plugins>
 	</build>
-<<<<<<< f9ec247cdaf883e40363ee814dbc6128c8ed34c7
-
-=======
 	
 <repositories>
     <repository>
@@ -98,5 +93,5 @@
       <url>https://repository.novatec-gmbh.de/content/repositories/novatec/</url>
     </repository>
   </repositories>
->>>>>>> Improvements
+
 </project>
