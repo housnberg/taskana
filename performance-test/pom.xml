@@ -25,7 +25,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>pro.taskana.data.generation.PrepareTestData</mainClass>
+							<mainClass>pro.taskana.data.generation.DataGenerator</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
