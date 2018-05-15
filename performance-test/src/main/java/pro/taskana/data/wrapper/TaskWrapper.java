@@ -1,7 +1,8 @@
-package pro.taskana.data.generation.util;
+package pro.taskana.data.wrapper;
 
 import pro.taskana.Classification;
 import pro.taskana.TaskState;
+import pro.taskana.data.generation.util.Formatter;
 import pro.taskana.impl.TaskImpl;
 
 public class TaskWrapper extends TaskImpl{

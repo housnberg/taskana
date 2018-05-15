@@ -6,6 +6,7 @@ import java.util.List;
 import pro.taskana.impl.ObjectReference;
 
 /**
+ * Class wraps the functionality for creating {@link ObjectReference}.
  * 
  * @author fe
  *
@@ -32,6 +33,13 @@ public class ObjectReferenceBuilder {
         return getNextObjectReference();
     }
 
+    /**
+     * Supplies a set of {@link ObjectReference}.
+     * 
+     * @param numberOfObjectReferences
+     *            number of {@link ObjectReference} to be returned.
+     * @return set of {@link ObjectReference}.
+     */
     public List<ObjectReference> getObjectReferences(int numberOfObjectReferences) {
         List<ObjectReference> references = new ArrayList<>();
         for (int i = 0; i < numberOfObjectReferences; i++) {
