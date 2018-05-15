@@ -11,17 +11,9 @@
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
-
-<<<<<<< ba1f7eede2a3305924a95f56352f34da3f943827
 	<modules>
 		<module>taskana-rest-spring</module>
 		<module>../web</module>
 		<module>taskana-rest-spring-example</module>
 	</modules>
-=======
-        <modules>
-                <module>taskana-rest-spring</module>
-                <module>taskana-rest-spring-example</module>
-        </modules>
->>>>>>> Workbaskets get persistet by API 
 </project>
