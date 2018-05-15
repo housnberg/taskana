@@ -1,10 +1,8 @@
 package pro.taskana.data.generation;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -13,42 +11,41 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pro.taskana.TaskState;
+import pro.taskana.adapter.TaskanaAPI;
+import pro.taskana.data.enums.ClassificationType;
 import pro.taskana.data.generation.builder.ClassificationBuilder;
 import pro.taskana.data.generation.builder.TaskBuilder;
 import pro.taskana.data.generation.builder.WorkbasketStructureBuilder;
-import pro.taskana.data.generation.persistence.TaskanaAPI;
-import pro.taskana.data.generation.util.ClassificationType;
-import pro.taskana.data.generation.util.ClassificationWrapper;
 import pro.taskana.data.generation.util.ElementStack;
-import pro.taskana.data.generation.util.TaskWrapper;
-import pro.taskana.data.generation.util.WorkbasketWrapper;
-import pro.taskana.impl.WorkbasketAccessItemImpl;
-import pro.taskana.impl.WorkbasketImpl;
+import pro.taskana.data.wrapper.ClassificationWrapper;
+import pro.taskana.data.wrapper.DataWrapper;
+import pro.taskana.data.wrapper.TaskWrapper;
+import pro.taskana.data.wrapper.WorkbasketAccessItemWrapper;
+import pro.taskana.data.wrapper.WorkbasketWrapper;
+import pro.taskana.export.ScenarioExporter;
 
 
 /**
- * Class for creating test data.
+ * Class for generate, persist and export test data.
  *
- * @author Felix Eurich
- * @author Eugen Ljavin
+ * @author fe
+ * @author el
  *
  */
-public class PrepareTestData {
+public class DataGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PrepareTestData.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataGenerator.class);
 
     private static final String OUPUT_PATH_IDENTIFIER = "-o";
     private static TaskanaAPI taskana;
 
     /**
      * Generate, persist and export test data.
-     *
+     * 
      * @param args
-     * @throws SQLException
-     * @throws NoSuchFieldException
-     * @throws IOException
+     * @throws Exception
      */
-    public static void main(String[] args) throws NoSuchFieldException, SQLException, IOException {
+    public static void main(String[] args) throws Exception {
         Path outputDir = null;
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals(OUPUT_PATH_IDENTIFIER) && args.length > i + 1) {
@@ -71,7 +68,7 @@ public class PrepareTestData {
         }
     }
 
-    private static DataWrapper buildDomainA() {
+    private static DataWrapper buildDomainA() throws Exception {
         // Build workbaskets
         WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("A");
         ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(50);
@@ -81,7 +78,8 @@ public class PrepareTestData {
         persistDomain(structureBuilder);
 
         // Build classifications
-        Map<ClassificationType, List<ClassificationWrapper>> classificationsByType = createClassificationsForDomain("A");
+        Map<ClassificationType, List<ClassificationWrapper>> classificationsByType = createClassificationsForDomain(
+                "A");
 
         // Build tasks
         TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 150000);
@@ -92,11 +90,11 @@ public class PrepareTestData {
                 .addTasks(TaskState.CLAIMED, 15000).addTasks(TaskState.READY, 15000).withObjectReferences(2).build();
         taskana.createTasks(tasks);
 
-        return new DataWrapper(structureBuilder.getGeneratedWorkbasketsAsWrapper(), tasks, classificationsByType.values().stream().flatMap(List::stream)
-                .collect(Collectors.toList()));
+        return new DataWrapper(structureBuilder.getGeneratedWorkbaskets(), tasks,
+                classificationsByType.values().stream().flatMap(List::stream).collect(Collectors.toList()));
     }
 
-    private static DataWrapper buildDomainB() {
+    private static DataWrapper buildDomainB() throws Exception {
         WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("B");
 
         ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(100);
@@ -113,7 +111,8 @@ public class PrepareTestData {
         persistDomain(structureBuilder);
 
         // Build classifications
-        Map<ClassificationType, List<ClassificationWrapper>> classificationsByType = createClassificationsForDomain("B");
+        Map<ClassificationType, List<ClassificationWrapper>> classificationsByType = createClassificationsForDomain(
+                "B");
 
         List<WorkbasketWrapper> wbsWithTasks = WorkbasketStructureBuilder.getWorkbasketsForLayer(layer0);
 
@@ -123,11 +122,11 @@ public class PrepareTestData {
                 .addTasks(TaskState.CLAIMED, 2500).addTasks(TaskState.READY, 2500).withAttachments(1)
                 .withObjectReferences(2).build();
         taskana.createTasks(tasks);
-        return new DataWrapper(structureBuilder.getGeneratedWorkbasketsAsWrapper(), tasks, classificationsByType.values().stream().flatMap(List::stream)
-                .collect(Collectors.toList()));
+        return new DataWrapper(structureBuilder.getGeneratedWorkbaskets(), tasks,
+                classificationsByType.values().stream().flatMap(List::stream).collect(Collectors.toList()));
     }
 
-    private static DataWrapper buildDomainC() {
+    private static DataWrapper buildDomainC() throws Exception {
         WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("C");
 
         ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(27000);
@@ -146,7 +145,8 @@ public class PrepareTestData {
         persistDomain(structureBuilder);
 
         // Build classifications
-        Map<ClassificationType, List<ClassificationWrapper>> classificationsByType = createClassificationsForDomain("C");
+        Map<ClassificationType, List<ClassificationWrapper>> classificationsByType = createClassificationsForDomain(
+                "C");
 
         List<WorkbasketWrapper> wbsWith0Attachments = WorkbasketStructureBuilder
                 .getWorkbasketsForLayer(uppermostLayer.get(0).getDirectChildren());
@@ -159,7 +159,8 @@ public class PrepareTestData {
         TaskBuilder taskBuilder = new TaskBuilder(classificationsByType, 300000);
 
         List<TaskWrapper> tasks = taskBuilder.affect(halveList(wbsWith0Attachments)).addTasks(TaskState.COMPLETED, 100)
-                .addTasks(TaskState.CLAIMED, 50).addTasks(TaskState.READY, 50).withAttachments(0).withObjectReferences(2).build();
+                .addTasks(TaskState.CLAIMED, 50).addTasks(TaskState.READY, 50).withAttachments(0)
+                .withObjectReferences(2).build();
         taskana.createTasks(tasks);
 
         tasks = taskBuilder.affect(halveList(wbsWith1Attachment)).addTasks(TaskState.COMPLETED, 100)
@@ -171,11 +172,12 @@ public class PrepareTestData {
                 .addTasks(TaskState.CLAIMED, 50).addTasks(TaskState.READY, 50).withObjectReferences(2)
                 .withAttachments(2).build();
         taskana.createTasks(tasks);
-        return new DataWrapper(structureBuilder.getGeneratedWorkbasketsAsWrapper(), tasks, classificationsByType.values().stream().flatMap(List::stream)
-                .collect(Collectors.toList()));
+        return new DataWrapper(structureBuilder.getGeneratedWorkbaskets(), tasks,
+                classificationsByType.values().stream().flatMap(List::stream).collect(Collectors.toList()));
     }
 
-    private static Map<ClassificationType, List<ClassificationWrapper>> createClassificationsForDomain(String domain) {
+    private static Map<ClassificationType, List<ClassificationWrapper>> createClassificationsForDomain(String domain)
+            throws Exception {
         ClassificationBuilder classificationBuilder = new ClassificationBuilder(domain);
         classificationBuilder.newClassificationCategory("MASCHINELL").withType(ClassificationType.AUFGABENTYP)
                 .withChildren(100).build();
@@ -189,16 +191,15 @@ public class PrepareTestData {
         return classificationBuilder.getClassificationsByType();
     }
 
-    private static void persistDomain(WorkbasketStructureBuilder domainBuilder) {
+    private static void persistDomain(WorkbasketStructureBuilder domainBuilder) throws Exception {
         LOGGER.info("Persisting domain {}", domainBuilder.getDomainName());
-        List<WorkbasketImpl> workbaskets = domainBuilder.getGeneratedWorkbaskets();
-        List<WorkbasketAccessItemImpl> workbasketAccessItems = domainBuilder.getGeneratedAccessItems();
+        List<WorkbasketWrapper> workbaskets = domainBuilder.getGeneratedWorkbaskets();
+        List<WorkbasketAccessItemWrapper> workbasketAccessItems = domainBuilder.getGeneratedAccessItems();
 
         taskana.createWorkbaskets(workbaskets);
+        taskana.createDistributionTargets(workbaskets);
         taskana.createWorkbasketAccesItem(workbasketAccessItems);
-
-        LOGGER.info("Domain {} with {} workbaskets, {} users and {} builded.", domainBuilder.getDomainName(),
-                workbaskets.size(), domainBuilder.getGeneratedUsers().size(), workbasketAccessItems.size());
+        LOGGER.info("Domain {} successfully persisted", domainBuilder.getDomainName());
     }
 
     private static List<WorkbasketWrapper> halveList(List<WorkbasketWrapper> listToHalve) {

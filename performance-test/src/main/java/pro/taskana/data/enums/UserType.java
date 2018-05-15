@@ -1,4 +1,4 @@
-package pro.taskana.data.generation.util;
+package pro.taskana.data.enums;
 
 /**
  * Enum contains supported user types. The types are used to generate the user

@@ -1,6 +1,8 @@
-package pro.taskana.data.generation.util;
+package pro.taskana.data.wrapper;
 
 import pro.taskana.WorkbasketType;
+import pro.taskana.data.enums.UserType;
+import pro.taskana.data.generation.util.Formatter;
 
 /**
  * Class wraps the informations to generate a user-id with the pattern:

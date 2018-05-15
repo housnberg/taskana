@@ -1,13 +1,15 @@
-package pro.taskana.data.io;
+package pro.taskana.export;
 
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 
-import pro.taskana.data.generation.util.ClassificationWrapper;
-import pro.taskana.data.generation.util.DataWrapper;
-import pro.taskana.data.generation.util.TaskWrapper;
-import pro.taskana.data.generation.util.WorkbasketWrapper;
+import pro.taskana.data.wrapper.ClassificationWrapper;
+import pro.taskana.data.wrapper.DataWrapper;
+import pro.taskana.data.wrapper.TaskWrapper;
+import pro.taskana.data.wrapper.WorkbasketWrapper;
+import pro.taskana.export.io.FileType;
+import pro.taskana.export.io.FileUtils;
 
 public class ScenarioExporter {
 
@@ -99,7 +101,7 @@ public class ScenarioExporter {
             ClassificationWrapper rndClassification = data.classifications.get(rnd.nextInt(data.classifications.size()-1));
             return rndClassification.getKey() + ", " + rndClassification.getCategory();
         });
-        createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getDirectChildren().iterator().next().getId());
+        createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getDirectChildren().iterator().next().getKey());
         createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getOwner());
         fileUtils.createFile("06_aufgabe_erstellen_claimen_aktualisieren_abschliessen_weiterleiten", createUpdateTransferCompleteTask.generateFileContent());
 

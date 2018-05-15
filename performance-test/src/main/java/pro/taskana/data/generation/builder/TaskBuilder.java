@@ -6,13 +6,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import pro.taskana.Task;
 import pro.taskana.TaskState;
-import pro.taskana.data.generation.util.ClassificationType;
-import pro.taskana.data.generation.util.ClassificationWrapper;
-import pro.taskana.data.generation.util.TaskWrapper;
-import pro.taskana.data.generation.util.WorkbasketWrapper;
+import pro.taskana.data.enums.ClassificationType;
+import pro.taskana.data.wrapper.ClassificationWrapper;
+import pro.taskana.data.wrapper.TaskWrapper;
+import pro.taskana.data.wrapper.WorkbasketWrapper;
 import pro.taskana.impl.ClassificationImpl;
 
+/**
+ * Builder for creating {@link Task}.
+ * 
+ * @author fe
+ *
+ */
 public class TaskBuilder {
     
     private List<ClassificationWrapper> taskClassifications;
