@@ -129,10 +129,11 @@ public class DataGenerator {
     private static DataWrapper buildDomainC() throws Exception {
         WorkbasketStructureBuilder structureBuilder = new WorkbasketStructureBuilder("C");
 
-        ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(27000);
+        ElementStack<WorkbasketWrapper> personalWorkbaskets = structureBuilder.createSimpleWorkbaskets(28125);
 
         List<WorkbasketWrapper> layer0FwdTo10 = structureBuilder.newLayer().withWb(1875).withNumberOfDistTargets(15)
                 .selectFrom(personalWorkbaskets).build();
+
         ElementStack<WorkbasketWrapper> layer1Wb = new ElementStack<>(layer0FwdTo10);
 
         List<WorkbasketWrapper> layer2FwdTo10 = structureBuilder.newLayer().withWb(75).withNewOwner()
@@ -141,7 +142,6 @@ public class DataGenerator {
 
         List<WorkbasketWrapper> uppermostLayer = structureBuilder.newLayer().withWb(3).withNewOwner()
                 .withNumberOfDistTargets(25).selectFrom(layer2Wb).build();
-
         persistDomain(structureBuilder);
 
         // Build classifications

@@ -43,6 +43,7 @@ public class FileUtils {
             String content = lines.stream().map(line -> line.stream().collect(Collectors.joining(DEFAULT_SEPARATOR)))
                     .collect(Collectors.joining("\n"));
 
+            content.replaceAll(" ", "");
             writer.write(content);
             writer.flush();
             writer.close();

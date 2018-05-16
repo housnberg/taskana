@@ -29,7 +29,7 @@ public class ScenarioExporter {
         ownerKeyExistingTasks.addPredicate(wb -> !wb.getTasks().isEmpty());
         ownerKeyExistingTasks.addPredicate(wb -> wb.getDomain().equals("C"));
         
-        ownerKeyExistingTasks.addLineValueProducer(wb -> wb.getId());
+        ownerKeyExistingTasks.addLineValueProducer(wb -> wb.getKey());
         ownerKeyExistingTasks.addLineValueProducer(wb -> wb.getDomain());
         ownerKeyExistingTasks.addLineValueProducer(wb -> wb.getOwner());
         fileUtils.createFile("00_auslesen_einer_aufgabe_aus_einem_postkorb",
@@ -46,6 +46,9 @@ public class ScenarioExporter {
         DataExporter<TaskWrapper> porOwner = new DataExporter<>(data.tasks);
         taskIDOwner.maxLines(100000);
         porOwner.addPredicate(t -> t.getDomain().equals("C"));
+        porOwner.addPredicate(t -> data.tasks.stream()
+                .filter(other -> other.getPrimaryObjRef().getValue().equals(t.getPrimaryObjRef().getValue()))
+                .count() >= 5);
         porOwner.addLineValueProducer(t -> t.getPrimaryObjRef().getValue());
         porOwner.addLineValueProducer(t -> data.workbaskets.stream()
                 .filter(wb -> wb.getKey().equals(t.getWorkbasketKey())).findFirst().get().getOwner());
@@ -96,6 +99,7 @@ public class ScenarioExporter {
         createUpdateTransferCompleteTask.addPredicate(wb -> !wb.getDirectChildren().isEmpty());
         createUpdateTransferCompleteTask.addPredicate(wb -> wb.getDomain().equals("C"));
         createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getKey());
+        createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getId());
         createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getDomain());
         createUpdateTransferCompleteTask.addLineValueProducer(wb -> {
             ClassificationWrapper rndClassification = data.classifications.get(rnd.nextInt(data.classifications.size()-1));
