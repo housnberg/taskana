@@ -25,7 +25,7 @@ public class AttachmentImpl implements Attachment {
     private Instant received;
     private Map<String, String> customAttributes = Collections.emptyMap();
 
-    AttachmentImpl() {
+    protected AttachmentImpl() {
     }
 
     @Override
