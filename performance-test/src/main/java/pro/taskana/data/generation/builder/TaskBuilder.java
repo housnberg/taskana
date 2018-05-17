@@ -31,7 +31,6 @@ public class TaskBuilder {
     private ObjectReferenceBuilder objectReferenceBuilder;
     
     private int numberOfAttachments;
-    private int numberOfPORForTask;
     
     public TaskBuilder(Map<ClassificationType, List<ClassificationWrapper>> classifications, int numberOfDifferentPOR, int maxAttachments) {
         this.taskDistribution = new HashMap<>();
@@ -39,7 +38,6 @@ public class TaskBuilder {
         this.taskClassifications = classifications.get(ClassificationType.AUFGABENTYP);
         this.rnd = new Random();
         attachmentBuilder = new AttachmentBuilder(classifications, maxAttachments);
-        this.numberOfPORForTask = 1;
         this.numberOfAttachments = 0;
         objectReferenceBuilder = new ObjectReferenceBuilder(numberOfDifferentPOR);
     }
@@ -62,11 +60,6 @@ public class TaskBuilder {
             tasks += taskDistribution.get(state);
         }
         taskDistribution.put(state, tasks);
-        return this;
-    }
-    
-    public TaskBuilder withObjectReferences(int exactNumberOfObjectReferences) {
-        this.numberOfPORForTask = exactNumberOfObjectReferences;
         return this;
     }
     
@@ -107,9 +100,6 @@ public class TaskBuilder {
             task.setClassification(taskClassification);
             
             task.setPrimaryObjRef(objectReferenceBuilder.getObjectReference());
-            for (int j = 0; j < numberOfPORForTask-1; j++) {
-                   //TODO: Add additional object references
-            }
             task.setAttachments(attachmentBuilder.getAttachments(numberOfAttachments));
             tasks.add(task);
         }

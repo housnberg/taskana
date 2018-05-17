@@ -11,25 +11,29 @@ import pro.taskana.data.generation.util.Formatter;
 import pro.taskana.impl.WorkbasketImpl;
 
 /**
- * Class wraps the {@link WorkbasketImpl} to generate the id according to the
- * following pattern: Domain + WorkbasketType + CompoundOrgLayer_+ GroupId + XXXX (fill to 40 chars) <br/>
+ * Class wraps the {@link WorkbasketImpl} to generate the key according to the
+ * following pattern: Domain + WB + parent organisation layers + member id
  *
+ * E.g. root {@link Workbasket} in domain "C" has the key CWB01. The
+ * distribution targets of CWB01 has the keys CWB0101, CWB0102, CWB0103 and so
+ * on. The distirbution targets of CWB0101 has the keys CWB010101, CWB010102,
+ * ...
+ * 
  * @author fe
  *
  */
 public class WorkbasketWrapper extends WorkbasketImpl {
 
     public static final int NUMBER_LENGTH_IN_ID = 2;
-    
+
     private static final int ID_LENGTH = 40;
     private static final String WORKBASKET_ID_PREFIX = "WB";
-    private static final char SEPARATOR = '_';
-    private static final int INITIAL_MEMBER_ID = 0;
+    private static final int INITIAL_MEMBER_ID = 1;
 
     private Integer memberId;
     private int layer;
     private String formattedOrgLevel;
-    
+
     private WorkbasketWrapper parent;
     private List<WorkbasketWrapper> directOrIndirectChildren;
     private List<WorkbasketWrapper> directChildren;
@@ -51,16 +55,17 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     /**
      * Sets the layer of this {@link Workbasket}.
      *
-     * @param layer index
+     * @param layer
+     *            index
      */
     public void setLayer(int layer) {
         this.layer = layer;
     }
-    
+
     public void addTask(Task task) {
         this.tasks.add(task);
     }
-    
+
     public List<Task> getTasks() {
         return tasks;
     }
@@ -73,7 +78,7 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     public void initAttributes() {
         if (getId() == null || getId().isEmpty()) {
             calculateOrgLvl();
-            if (!directChildren.isEmpty()) {            
+            if (!directChildren.isEmpty()) {
                 directChildren.forEach(WorkbasketWrapper::initAttributes);
             }
             setOwner(userWrapper.getId());
@@ -84,9 +89,9 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     }
 
     /**
-     * Supplies a list of {@link Workbasket} which represents the direct
-     * children of this {@link Workbasket} in the tree. Direct children are also
-     * the direct distribution targets of this {@link Workbasket}.
+     * Supplies a list of {@link Workbasket} which represents the direct children of
+     * this {@link Workbasket} in the tree. Direct children are also the direct
+     * distribution targets of this {@link Workbasket}.
      *
      * @return list of {@link Workbasket}
      */
@@ -113,22 +118,23 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     public List<WorkbasketWrapper> getDirectOrIndirectChildren() {
         return directOrIndirectChildren;
     }
-    
+
     /**
      * Sets the parent of this {@link Workbasket}.
      *
-     * @param parent {@link Workbasket}
+     * @param parent
+     *            {@link Workbasket}
      */
     public void setParent(WorkbasketWrapper parent) {
         this.parent = parent;
     }
 
     /**
-     * Sets the distribution targets of this {@link Workbasket}. The
-     * distribution target will be set as direct children of this
-     * {@link Workbasket}.
+     * Sets the distribution targets of this {@link Workbasket}. The distribution
+     * target will be set as direct children of this {@link Workbasket}.
      *
-     * @param distributionTargets distribution targets
+     * @param distributionTargets
+     *            distribution targets
      */
     public void addDistributionTargets(List<WorkbasketWrapper> distributionTargets) {
         this.directChildren.addAll(distributionTargets);
@@ -141,11 +147,12 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     /**
      * Set owner as {@link UserWrapper}.
      *
-     * @param user {@link UserWrapper} providing the user id
+     * @param user
+     *            {@link UserWrapper} providing the user id
      */
     public void setUserAsOwner(UserWrapper user) {
         this.userWrapper = user;
-        this.userWrapper.newOwnerOfWorkbasket(layer, getType());
+        this.userWrapper.newOwnerOfWorkbasket(layer);
     }
 
     /**
@@ -168,21 +175,20 @@ public class WorkbasketWrapper extends WorkbasketImpl {
         }
         return formattedOrgLevel;
     }
-    
 
     /**
-	 * Returns the member id of this {@link Workbasket}. Member id is the index of
-	 * this {@link Workbasket} within the list of the parents direct children.
-	 * 
-	 * @return id
-	 */
+     * Returns the member id of this {@link Workbasket}. Member id is the index of
+     * this {@link Workbasket} within the list of the parents direct children.
+     * 
+     * @return id
+     */
     public int getMemberId() {
         if (parent == null) {
             if (memberId == null) {
                 memberId = INITIAL_MEMBER_ID;
             }
         } else if (memberId == null) {
-            memberId = parent.getDirectChildren().indexOf(this);
+            memberId = parent.getDirectChildren().indexOf(this) + INITIAL_MEMBER_ID;
         }
         return memberId;
     }
@@ -190,27 +196,27 @@ public class WorkbasketWrapper extends WorkbasketImpl {
     private void calculateOrgLvl() {
         if (getOrgLevel1() == null || getOrgLevel1().isEmpty()) {
             if (parent == null) {
-            	int orgLevelValue = WorkbasketBuilder.WORKBASKETS_IN_ORG_LVL_1++;
+                int orgLevelValue = WorkbasketBuilder.WORKBASKETS_IN_ORG_LVL_1++;
                 formattedOrgLevel = Formatter.format(orgLevelValue, NUMBER_LENGTH_IN_ID);
                 setOrgLevel1(formattedOrgLevel);
             } else {
                 String parentOrgLvl = parent.getOrgLvl();
-                String formattedParentMemberId = Formatter.format(parent.getMemberId(), NUMBER_LENGTH_IN_ID);
-                formattedOrgLevel = parentOrgLvl + formattedParentMemberId;
+                String formattedMemberId = Formatter.format(getMemberId(), NUMBER_LENGTH_IN_ID);
+                formattedOrgLevel = parentOrgLvl + formattedMemberId;
                 copyOrgLvlFromParent();
-                writeCurrentOrgLevelValue(formattedParentMemberId);
+                writeCurrentOrgLevelValue(formattedMemberId);
             }
-            userWrapper.setOrgLvl(formattedOrgLevel, getType(), getMemberId());
+            userWrapper.setOrgLvl(formattedOrgLevel, getType());
         }
     }
-    
+
     private void copyOrgLvlFromParent() {
         setOrgLevel1(parent.getOrgLevel1());
         setOrgLevel2(parent.getOrgLevel2());
         setOrgLevel3(parent.getOrgLevel3());
         setOrgLevel4(parent.getOrgLevel4());
     }
-    
+
     private void writeCurrentOrgLevelValue(String orgLvlValue) {
         if (getOrgLevel2() == null || getOrgLevel2().isEmpty()) {
             setOrgLevel2(orgLvlValue);
@@ -226,8 +232,6 @@ public class WorkbasketWrapper extends WorkbasketImpl {
             StringBuilder sb = new StringBuilder(getDomain());
             sb.append(WORKBASKET_ID_PREFIX);
             sb.append(formattedOrgLevel);
-            sb.append(SEPARATOR);
-            sb.append(Formatter.format(getMemberId(), NUMBER_LENGTH_IN_ID));
             String id = sb.toString();
             setKey(id);
             setId(Formatter.fitToExpectedLength(id, ID_LENGTH));
@@ -282,13 +286,13 @@ public class WorkbasketWrapper extends WorkbasketImpl {
 
     @Override
     public String toString() {
-    	StringBuilder sb = new StringBuilder("[");
-    	sb.append("id=");
-    	sb.append(getId());
-    	sb.append(", ");
-    	sb.append(userWrapper.toString());
-    	sb.append("]");
-    	return sb.toString();
+        StringBuilder sb = new StringBuilder("[");
+        sb.append("id=");
+        sb.append(getId());
+        sb.append(", ");
+        sb.append(userWrapper.toString());
+        sb.append("]");
+        return sb.toString();
     }
 
 }

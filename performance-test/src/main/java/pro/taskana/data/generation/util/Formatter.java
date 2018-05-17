@@ -49,17 +49,32 @@ public class Formatter {
      * @return resulting string with expected length
      */
     public static String fitToExpectedLength(String string, int expectedLength) {
+        return fitToExpectedLength(string, expectedLength, SUFFIX_CHAR);
+    }
+
+    /**
+     * Expands or cut the string to fit the expected length.
+     * 
+     * @param string
+     *            word to be expand
+     * @param expectedLength
+     *            number of characters in result
+     * @param fillingChar
+     *            character to fill the string with
+     * @return resulting string with expected length
+     */
+    public static String fitToExpectedLength(String string, int expectedLength, char filling) {
         int currentLength = 0;
         if(string != null) {
             currentLength = string.length();
         }
         
         int difference = expectedLength - currentLength;
-        if (difference <= 0) {
+        if (difference < 0) {
             return string.substring(0, expectedLength - 1);
         }
 
-        String suffix = Stream.generate(() -> String.valueOf(SUFFIX_CHAR)).limit(difference)
+        String suffix = Stream.generate(() -> String.valueOf(filling)).limit(difference)
                 .collect(Collectors.joining());
 
         return string + suffix;
