@@ -47,8 +47,7 @@ public class ScenarioExporter {
         taskIDOwner.maxLines(100000);
         porOwner.addPredicate(t -> t.getDomain().equals("C"));
         porOwner.addLineValueProducer(t -> t.getPrimaryObjRef().getValue());
-        porOwner.addLineValueProducer(t -> data.workbaskets.stream()
-                .filter(wb -> wb.getKey().equals(t.getWorkbasketKey())).findFirst().get().getOwner());
+        porOwner.addLineValueProducer(t -> "superUser");
         fileUtils.createFile("02_suchen_von_aufgaben_mit_ordnungsbegriff", porOwner.generateFileContent());
 
         DataExporter<WorkbasketWrapper> ownerWbKey = new DataExporter<>(data.workbaskets);
@@ -56,13 +55,13 @@ public class ScenarioExporter {
         ownerWbKey.addLineValueProducer(wb -> wb.getKey());
         ownerWbKey.addLineValueProducer(wb -> wb.getDomain());
         ownerWbKey.addLineValueProducer(wb -> wb.getOwner());
-        fileUtils.createFile("030_lesen_der_daten_eines_postkorbs", ownerWbKey.generateFileContent());
+        fileUtils.createFile("03_00_lesen_der_daten_eines_postkorbs", ownerWbKey.generateFileContent());
         
         DataExporter<WorkbasketWrapper> ownerWbId = new DataExporter<>(data.workbaskets);
         ownerWbId.addPredicate(wb -> wb.getDomain().equals("C"));
         ownerWbId.addLineValueProducer(wb -> wb.getId());
         ownerWbId.addLineValueProducer(wb -> wb.getOwner());
-        fileUtils.createFile("031_lesen_der_daten_eines_postkorbs_per_id", ownerWbId.generateFileContent());
+        fileUtils.createFile("03_01_lesen_der_daten_eines_postkorbs_per_id", ownerWbId.generateFileContent());
 
         DataExporter<TaskWrapper> typeCategoryCustomDomain = new DataExporter<>(data.tasks);
         typeCategoryCustomDomain.maxLines(100000);
@@ -75,14 +74,14 @@ public class ScenarioExporter {
         });
         typeCategoryCustomDomain.addLineValueProducer(t -> t.getDomain());
         typeCategoryCustomDomain.addConstantLineValue(data.workbaskets.iterator().next().getOwner());
-        fileUtils.createFile("040_suchen_einer_klassifikation", typeCategoryCustomDomain.generateFileContent());
+        fileUtils.createFile("04_00_suchen_einer_klassifikation", typeCategoryCustomDomain.generateFileContent());
         
         DataExporter<TaskWrapper> classificationId = new DataExporter<>(data.tasks);
         classificationId.maxLines(100000);
         classificationId.addPredicate(t -> t.getDomain().equals("C"));
         classificationId.addLineValueProducer(t -> t.getClassificationSummary().getId());
         classificationId.addConstantLineValue(data.workbaskets.iterator().next().getOwner());
-        fileUtils.createFile("041_suchen_einer_klassifikation_per_id", classificationId.generateFileContent());
+        fileUtils.createFile("04_01_suchen_einer_klassifikation_per_id", classificationId.generateFileContent());
 
         DataExporter<TaskWrapper> keyDomain = new DataExporter<>(data.tasks);
         typeCategoryCustomDomain.maxLines(100000);

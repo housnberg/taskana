@@ -137,9 +137,7 @@ public class TaskanaAPI {
      */
     public void createDistributionTargets(List<WorkbasketWrapper> workbaskets)
             throws WorkbasketNotFoundException, NotAuthorizedException {
-        int overall = 0;
         for (WorkbasketWrapper workbasketWrapper : workbaskets) {
-            overall += workbasketWrapper.getDirectChildren().size();
             for (WorkbasketWrapper distributionTarget : workbasketWrapper.getDirectChildren()) {
                 workbasketService.addDistributionTarget(workbasketWrapper.getId(), distributionTarget.getId());
             }

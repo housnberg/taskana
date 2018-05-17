@@ -26,7 +26,6 @@ public class WorkbasketStructureBuilder {
     private int numberOfDistTargetsFromPool;
     private List<WorkbasketWrapper> distributionTargets;
     private ElementStack<WorkbasketWrapper> poolOfGeneratedWorkbaskets;
-    private boolean newOwner;
     private List<WorkbasketWrapper> lastGeneratedLayer;
 
     private AccessItemBuilder accesItemBuilder;
@@ -73,17 +72,6 @@ public class WorkbasketStructureBuilder {
      */
     public WorkbasketStructureBuilder withWb(int quantity) {
         this.quantity = quantity;
-        return this;
-    }
-
-    /**
-     * Determines whether new {@link Workbasket} will get an existing user as owner
-     * or if a new user will be created.
-     * 
-     * @return configured {@link WorkbasketStructureBuilder} instance
-     */
-    public WorkbasketStructureBuilder withNewOwner() {
-        this.newOwner = true;
         return this;
     }
 
@@ -136,8 +124,7 @@ public class WorkbasketStructureBuilder {
     public ElementStack<WorkbasketWrapper> createSimpleWorkbaskets(int amount) {
         List<WorkbasketWrapper> wbs = workbasketBuilder.generateWorkbaskets(amount);
         for (WorkbasketWrapper wb : wbs) {
-            accesItemBuilder.forUser(wb.getOwnerAsUser())
-                    .hasAccess(AccessType.READ, AccessType.APPEND, AccessType.OPEN, AccessType.TRANSFER).to(wb).build();
+            accesItemBuilder.forUser(wb.getOwnerAsUser()).hasAccess(AccessType.values()).to(wb).build();
         }
         lastGeneratedLayer = wbs;
         return new ElementStack<>(wbs);
@@ -187,6 +174,22 @@ public class WorkbasketStructureBuilder {
     }
 
     /**
+     * Create a new user with the given id and build {@link WorkbasketAccessItem}s
+     * for all passed {@link Workbasket}.
+     * 
+     * @param userId
+     * @param accessibleWorkbaskets
+     *            {@link Workbaskets} which the user can access
+     * @param accessTypes
+     *            defines which {@link AccessType} should be granted
+     */
+    public void createUserWithAccessTo(String userId, List<WorkbasketWrapper> accessibleWorkbaskets,
+            AccessType... accessTypes) {
+        UserWrapper superUser = new UserWrapper(userId, true);
+        accesItemBuilder.forUser(superUser).hasAccess(accessTypes).to(accessibleWorkbaskets).build();
+    }
+
+    /**
      * Supplies all user ids as {@link UserWrapper} which are used in the domain.
      * 
      * @return all {@link UserWrapper}
@@ -218,11 +221,9 @@ public class WorkbasketStructureBuilder {
     }
 
     private List<WorkbasketWrapper> generateManagingWorkbaskets() {
-        List<WorkbasketWrapper> newWorkbaskets = workbasketBuilder.generateManagingWorkbaskets(quantity, newOwner);
-        newWorkbaskets.stream().filter(wb -> wb.getOwnerAsUser() != null)
-                .forEach(wb -> accesItemBuilder.forUser(wb.getOwnerAsUser())
-                        .hasAccess(AccessType.READ, AccessType.APPEND, AccessType.OPEN, AccessType.TRANSFER).to(wb)
-                        .build());
+        List<WorkbasketWrapper> newWorkbaskets = workbasketBuilder.generateManagingWorkbaskets(quantity);
+        newWorkbaskets.stream().filter(wb -> wb.getOwnerAsUser() != null).forEach(
+                wb -> accesItemBuilder.forUser(wb.getOwnerAsUser()).hasAccess(AccessType.values()).to(wb).build());
         return newWorkbaskets;
     }
 
@@ -249,41 +250,17 @@ public class WorkbasketStructureBuilder {
     }
 
     private void buildGroup(WorkbasketWrapper parent, List<WorkbasketWrapper> children) {
-        if (parent.getOwnerAsUser() == null) {
-            parent.setUserAsOwner(children.get(0).getOwnerAsUser());
-        }
         parent.addDistributionTargets(children);
-        accesItemBuilder.forUser(parent.getOwnerAsUser())
-                .hasAccess(AccessType.APPEND, AccessType.READ, AccessType.OPEN, AccessType.TRANSFER)
-                .transitiveTo(children).build();
+        accesItemBuilder.forUser(parent.getOwnerAsUser()).hasAccess(AccessType.values()).transitiveTo(children).build();
         List<UserWrapper> member = children.stream().map(wb -> wb.getOwnerAsUser()).collect(Collectors.toList());
-        accesItemBuilder.forUsers(member)
-                .hasAccess(AccessType.READ, AccessType.APPEND, AccessType.OPEN, AccessType.TRANSFER).to(parent).build();
+        accesItemBuilder.forUsers(member).hasAccess(AccessType.values()).to(parent).build();
     }
 
     private void init() {
         numberOfDistTargetsFromPool = 0;
         quantity = 1;
-        newOwner = false;
         distributionTargets = new ArrayList<>();
         poolOfGeneratedWorkbaskets = new ElementStack<>();
-    }
-
-    /**
-     * Returns all {@link Workbasket}s for a given Layer.
-     * 
-     * @param layer
-     *            The layer with all {@link Workbasket}s
-     * @return all {@link Workbasket}s for the layer.
-     */
-    public static List<WorkbasketWrapper> getWorkbasketsForLayer(List<WorkbasketWrapper> layer) {
-        List<WorkbasketWrapper> workasketsInLayer = new ArrayList<>();
-
-        layer.stream().forEach((wb) -> {
-            workasketsInLayer.addAll(wb.getDirectOrIndirectChildren());
-        });
-
-        return workasketsInLayer;
     }
 
 }
