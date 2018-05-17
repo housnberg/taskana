@@ -1,12 +1,10 @@
 package pro.taskana.data.wrapper;
 
+import pro.taskana.Workbasket;
 import pro.taskana.WorkbasketType;
-import pro.taskana.data.enums.UserType;
-import pro.taskana.data.generation.util.Formatter;
 
 /**
- * Class wraps the informations to generate a user-id with the pattern:
- * Domain + Role + Orglvl + TeamId
+ * Class wraps the informations to generate a user.
  *
  *
  * @author fe
@@ -14,58 +12,35 @@ import pro.taskana.data.generation.util.Formatter;
  */
 public class UserWrapper {
 
-    public static final String ID_PART_LINKING_CHAR = "_";
     public static final int NUMBER_LENGTH_IN_ID = 2;
     
     private String orglvl;
-    private final String domain;
+    private String domain;
     private int highestWorkbasketLevel;
-    private UserType type;
-    private int teamMemberIndex;
     private String generatedId;
+
+    public UserWrapper(String id, boolean useStaticId) {
+        this.generatedId = id;
+    }
 
     public UserWrapper(String domain) {
         this.domain = domain;
-        this.type = UserType.USER;
-        teamMemberIndex = 1;
         this.generatedId = null;
         this.orglvl = null;
     }
 
     /**
-     * Called by {@link WorkbasketWrapper} when the owner is set. The workbasket
-     * informs his user about its {@link WorkbasketType} and level.
+     * Called by {@link WorkbasketWrapper} when the owner is set. The
+     * {@link Workbasket} informs his user about its {@link WorkbasketType} and
+     * level.
      *
-     * @param level of the workbasket owned by the this user
-     * @param ownedWbType {@link WorkbasketType} of the workbasket owned by this
-     * user
+     * @param level
+     *            of the {@link Workbasket} owned by the this user
      */
-    public void newOwnerOfWorkbasket(int level, WorkbasketType ownedWbType) {
+    public void newOwnerOfWorkbasket(int level) {
         if (highestWorkbasketLevel < level) {
             highestWorkbasketLevel = level;
         }
-
-        if (ownedWbType == WorkbasketType.GROUP) {
-            type = UserType.TEAMMANAGER;
-        }
-    }
-
-    /**
-     * Sets the index of this user in the team.
-     *
-     * @param index
-     */
-    public void setTeamMemberIndex(int index) {
-        this.teamMemberIndex = index;
-    }
-
-    /**
-     * Return index of this {@link UserWrapper} within the highest team.
-     *
-     * @return team index
-     */
-    public int getTeamIndex() {
-        return teamMemberIndex;
     }
 
     /**
@@ -74,39 +49,37 @@ public class UserWrapper {
      * @param orgLvl organisation level
      * @param ownedWbType {@link WorkbasketType}
      */
-    public void setOrgLvl(String orgLvl, WorkbasketType ownedWbType, int teamIndex) {
+    public void setOrgLvl(String orgLvl, WorkbasketType ownedWbType) {
         if (this.orglvl != null) {
             int lvl = this.orglvl.length();
             int newLvl = orglvl.length();
             if (newLvl < lvl) {
                 this.orglvl = orgLvl;
-                this.teamMemberIndex = teamIndex;
             } 
         } else {
             this.orglvl = orgLvl;
-            this.teamMemberIndex = teamIndex;
-        }
-
-        if (ownedWbType == WorkbasketType.GROUP) {
-            type = UserType.TEAMMANAGER;
         }
     }
 
     /**
-     * Generated the id of this user with pattern: DomainRoleOrglvlUsertTeamId.
+     * Generated the id of this user with pattern: domain + role + organisation
+     * level of highest owned {@link Workbasket}
+     * 
+     * E.g. user owns only one {@link Workbasket} with key CWB0101010205 then the
+     * user id is CU0101010205. If the user owns more than one {@link Workbasket}
+     * like CWB010102, CWB01020305 and CWB0102 then the user id is CU0102 because of
+     * CWB0102 is the {@link Workbasket} with the highest organisation level.
      *
      * @return id
      */
     public String getId() {
         if (generatedId == null || generatedId.isEmpty()) {
             StringBuilder sb = new StringBuilder(domain);
-            sb.append(type.getAsString());
+            sb.append("U");
             if (orglvl == null || orglvl.isEmpty()) {
                 throw new IllegalStateException("Orglevel should be set!");
             }
             sb.append(orglvl);
-            sb.append(ID_PART_LINKING_CHAR);
-            sb.append(Formatter.format(teamMemberIndex, NUMBER_LENGTH_IN_ID));
             generatedId = sb.toString();
         }
         return generatedId;

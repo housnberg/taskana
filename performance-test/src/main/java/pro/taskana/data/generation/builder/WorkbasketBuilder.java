@@ -18,7 +18,7 @@ import pro.taskana.data.wrapper.WorkbasketWrapper;
  */
 public class WorkbasketBuilder {
 
-    public static int WORKBASKETS_IN_ORG_LVL_1 = 0;
+    public static int WORKBASKETS_IN_ORG_LVL_1 = 1;
 
     private final UserBuilder userBuilder;
     private final String domainName;
@@ -31,7 +31,7 @@ public class WorkbasketBuilder {
         this.userBuilder = userBuilder;
         this.domainName = domainName;
         generatedWorkbaskets = new ArrayList<>();
-        WORKBASKETS_IN_ORG_LVL_1 = 0;
+        WORKBASKETS_IN_ORG_LVL_1 = 1;
     }
 
     /**
@@ -57,14 +57,11 @@ public class WorkbasketBuilder {
      *            number of new {@link Workbasket}
      * @return all created {@link Workbasket}
      */
-    public List<WorkbasketWrapper> generateManagingWorkbaskets(int amount, boolean withOwner) {
+    public List<WorkbasketWrapper> generateManagingWorkbaskets(int amount) {
         List<WorkbasketWrapper> workbaskets = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            if (withOwner) {
-                workbaskets.add(generateGroupWorkbasketWithOwner());
-            } else {
-                workbaskets.add(generateGroupWorkbasketWithoutOwner());
-            }
+            workbaskets.add(generateGroupWorkbasketWithOwner());
+
         }
         return workbaskets;
     }
