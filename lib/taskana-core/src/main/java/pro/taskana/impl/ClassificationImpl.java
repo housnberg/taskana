@@ -34,7 +34,7 @@ public class ClassificationImpl implements Classification {
     private String custom7;
     private String custom8;
 
-    ClassificationImpl() {
+    protected ClassificationImpl() {
     }
 
     ClassificationImpl(ClassificationImpl classification) {

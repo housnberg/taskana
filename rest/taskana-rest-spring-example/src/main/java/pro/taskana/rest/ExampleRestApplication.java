@@ -1,8 +1,8 @@
 package pro.taskana.rest;
 
+import javax.annotation.PostConstruct;
 import java.sql.SQLException;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -43,7 +42,7 @@ public class ExampleRestApplication {
     @ConfigurationProperties(prefix = "datasource")
     public DataSourceProperties dataSourceProperties() {
         DataSourceProperties props = new DataSourceProperties();
-        props.setUrl("jdbc:h2:mem:taskana;IGNORECASE=TRUE;LOCK_MODE=0;INIT=CREATE SCHEMA IF NOT EXISTS TASKANA");
+        props.setUrl("jdbc:db2://172.16.160.101:50000/tskdb");
         return props;
     }
 

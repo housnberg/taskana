@@ -30,7 +30,7 @@ public class WorkbasketAccessItemImpl implements WorkbasketAccessItem {
     private boolean permCustom11;
     private boolean permCustom12;
 
-    WorkbasketAccessItemImpl() {
+    protected WorkbasketAccessItemImpl() {
         super();
     }
 

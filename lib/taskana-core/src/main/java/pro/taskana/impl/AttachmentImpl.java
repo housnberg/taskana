@@ -26,7 +26,7 @@ public class AttachmentImpl implements Attachment {
     private Instant received;
     private Map<String, String> customAttributes = new HashMap<String, String>();
 
-    AttachmentImpl() {
+    protected AttachmentImpl() {
     }
 
     @Override
