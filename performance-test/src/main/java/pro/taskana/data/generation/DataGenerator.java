@@ -57,9 +57,9 @@ public class DataGenerator {
         taskana = new TaskanaAPI();
 
         DataWrapper generatedData;
-        // generatedData = buildDomainA();
-        // generatedData = generatedData.union(buildDomainB());
-        generatedData = buildDomainC();
+        generatedData = buildDomainA();
+        generatedData = generatedData.union(buildDomainB());
+        generatedData = generatedData.union(buildDomainC());
 
         if (outputDir != null) {
             if (outputDir != null && !Files.exists(outputDir)) {
