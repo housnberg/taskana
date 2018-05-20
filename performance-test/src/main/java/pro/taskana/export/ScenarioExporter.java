@@ -102,6 +102,7 @@ public class ScenarioExporter {
             return rndClassification.getKey() + ", " + rndClassification.getCategory();
         });
         createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getDirectChildren().iterator().next().getKey());
+        createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getDirectChildren().iterator().next().getId());
         createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getOwner());
         fileUtils.createFile("06_aufgabe_erstellen_claimen_aktualisieren_abschliessen_weiterleiten", createUpdateTransferCompleteTask.generateFileContent());
 
