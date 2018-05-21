@@ -99,7 +99,7 @@ public class ScenarioExporter {
         createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getDomain());
         createUpdateTransferCompleteTask.addLineValueProducer(wb -> {
             ClassificationWrapper rndClassification = data.classifications.get(rnd.nextInt(data.classifications.size()-1));
-            return rndClassification.getKey() + ", " + rndClassification.getCategory();
+            return rndClassification.getKey() + "," + rndClassification.getCategory();
         });
         createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getDirectChildren().iterator().next().getKey());
         createUpdateTransferCompleteTask.addLineValueProducer(wb -> wb.getDirectChildren().iterator().next().getId());
