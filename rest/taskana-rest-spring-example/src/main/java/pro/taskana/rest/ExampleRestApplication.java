@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -19,6 +20,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @SpringBootApplication
 @EnableScheduling
 @Import(RestConfiguration.class)
+@PropertySource(value = "file:./taskana.properties")
 public class ExampleRestApplication {
 
     public static void main(String[] args) {
@@ -30,7 +32,6 @@ public class ExampleRestApplication {
     @ConfigurationProperties(prefix = "datasource")
     public DataSourceProperties dataSourceProperties() {
         DataSourceProperties props = new DataSourceProperties();
-        props.setUrl("jdbc:db2://172.16.160.101:50000/tskdb");
         return props;
     }
 
