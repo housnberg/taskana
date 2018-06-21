@@ -22,6 +22,10 @@ import pro.taskana.impl.ClassificationImpl;
  */
 public class TaskBuilder {
     
+	private static final int NUMBER_OF_CALLBACK_INFOS = 5;
+	private static final int NUMBER_OF_CUSTOM_ATTRIBUTES = 20;
+	private static final Map<String, String> CALLBACK_INFO = new HashMap<>();
+	private static final Map<String, String> CUSTOM_ATTRIBUTES = new HashMap<>();
     private List<ClassificationWrapper> taskClassifications;
     private Random rnd;
     private List<WorkbasketWrapper> affectedWorkbaskets;
@@ -32,6 +36,17 @@ public class TaskBuilder {
     
     private int numberOfAttachments;
     
+	static {
+		for (int i = 1; i <= NUMBER_OF_CALLBACK_INFOS; i++) {
+			CALLBACK_INFO.put("Property_" + i,
+					"Property Value of Property_" + i);
+		}
+		for (int i = 1; i <= NUMBER_OF_CUSTOM_ATTRIBUTES; i++) {
+			CUSTOM_ATTRIBUTES.put("Custom attribute_" + i,
+					"Property value of custom attribute" + i);
+		}
+	}
+
     public TaskBuilder(Map<ClassificationType, List<ClassificationWrapper>> classifications, int numberOfDifferentPOR, int maxAttachments) {
         this.taskDistribution = new HashMap<>();
         this.affectedWorkbaskets = new ArrayList<>();
@@ -102,7 +117,10 @@ public class TaskBuilder {
             task.setPrimaryObjRef(objectReferenceBuilder.getObjectReference());
             task.setAttachments(attachmentBuilder.getAttachments(numberOfAttachments));
             tasks.add(task);
+			task.setCallbackInfo(CALLBACK_INFO);
+			task.setCustomAttributes(CUSTOM_ATTRIBUTES);
         }
         return tasks;
     }
+
 }
