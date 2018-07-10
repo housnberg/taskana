@@ -1,9 +1,10 @@
 package pro.taskana.data.generation.builder;
 
+import pro.taskana.ObjectReference;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import pro.taskana.impl.ObjectReference;
 
 /**
  * Class wraps the functionality for creating {@link ObjectReference}.

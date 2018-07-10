@@ -1,18 +1,14 @@
 package pro.taskana;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
 import pro.taskana.exceptions.InvalidArgumentException;
-import pro.taskana.impl.ObjectReference;
-import pro.taskana.impl.TaskImpl;
 
 /**
  * task-Interface to specify attribute interactions.
  */
-@JsonDeserialize(as = TaskImpl.class)
 public interface Task {
 
     /**

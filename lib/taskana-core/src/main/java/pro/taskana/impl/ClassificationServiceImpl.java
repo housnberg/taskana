@@ -71,7 +71,7 @@ public class ClassificationServiceImpl implements ClassificationService {
                 throw new ClassificationAlreadyExistException(classification);
             }
             classificationImpl = (ClassificationImpl) classification;
-            this.checkClassificationId(classificationImpl);
+            //this.checkClassificationId(classificationImpl);
             classificationImpl.setCreated(Instant.now());
             classificationImpl.setModified(classificationImpl.getCreated());
             this.initDefaultClassificationValues(classificationImpl);
